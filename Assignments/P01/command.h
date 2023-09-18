@@ -1,11 +1,13 @@
 #include <vector>
+#include <string>
 
 using namespace std;
 
 class Command
 {
 public:
-    Command(string cmd) {name = cmd;}
+    Command();
+    Command(string cmd);
     ~Command();
 
 private:
@@ -13,15 +15,19 @@ private:
     vector<string> flags;
 
     // Need to change this to vector<string> later for multiple redirects.
-    std::string redirects; 
+    string redirects; 
+    vector<string> arguments;
 
 public:
-    string GetCmd() {return name;}
-    vector<string> GetFlags() {return flags;}
-    string GetRedirects() {return redirects;}
+    string GetCmd();
+    string GetFlags();
+    string GetRedirects();
+    string GetArguments();
 
-    // void SetCmd(string cmd) {name = cmd;}
-    void SetFlags();
-    void SetRedirects(string redir) {redirects = redir;}
+    void SetCmd(string cmd);
+    void SetFlags(string flag);
+    void SetRedirects(string _redirects);
+    void SetArguments(string _arguments);
+    string PrintCommand();
 
 };

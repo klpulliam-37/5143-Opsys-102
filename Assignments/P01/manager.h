@@ -1,7 +1,8 @@
 #pragma once
 // #include <map>
 #include <vector>
-#include "command.h"
+
+class Command;
 
 // Maybe try and foward declare later?
 // class std::vector;
@@ -11,7 +12,9 @@ class Manager
 {
 private:
     // std::map<std::string, std::vector<std::string>> CmdMap;
-    vector<Command> Commands;
+    std::vector<Command> Commands;
+    int CommandIndex = 0;
+
 
 public:
     Manager();
@@ -22,4 +25,6 @@ private:
 
 public:
     void WaitForCommand();
+    void PrintCommands();
+    void ClearCommands();
 };
