@@ -42,6 +42,7 @@ string Command::GetRedirects()
 
 string Command::GetArguments()
 {
+    cout << "GetArguments()\n";
     string argumentsStr;
 
     for (vector<string>::iterator m = arguments.begin(); m != arguments.end(); ++m)
@@ -69,7 +70,9 @@ void Command::SetRedirects(string _redirects)
 
 void Command::SetArguments(string _arguments)
 {
+    cout << "SetArguments()\n";
     arguments.push_back(_arguments);
+    cout << "end SetArguments()\n";
 }
 
 string Command::PrintCommand()
