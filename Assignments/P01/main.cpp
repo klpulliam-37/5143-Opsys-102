@@ -1,9 +1,18 @@
 #include <iostream>
 #include <ncurses.h>
-#include "private/test.h"
+#include "manager.h"
+#include "parser.h"
 
 int main() 
 {
-    std::cout << "Testing!\n";
+    // Parser* obj = new Parser();
+    // obj->Print();
+    // std::cout << "Test Output!\n";
+    Manager* manager = new Manager();
+
+    while(true)
+    {
+        manager->WaitForCommand();
+    }
     return 0;
 }
