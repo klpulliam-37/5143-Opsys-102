@@ -3,6 +3,7 @@
 #include <sstream>
 #include "manager.h"
 #include "command.h"
+#include "ls.h"
 
 using namespace std;
 
@@ -26,7 +27,9 @@ void Manager::ParseCommand(string cmdLine)
     ss >> word;
     // Command->SetCmd(word);
 
-    Commands.push_back(Command(word));
+    // DetermineCommand(word);
+
+    Commands.push_back(DetermineCommand(word));
 
     // For every string, print it
     while (ss >> word)
@@ -42,19 +45,19 @@ void Manager::ParseCommand(string cmdLine)
         {
             CommandIndex++;
             ss >> word;
-            Commands.push_back(Command(word));
+            Commands.push_back(DetermineCommand(word));
         }
 
         // If -, then add as a flag to previous cmd
         else if (word[0] == '-') 
         {
-            Commands[CommandIndex].SetFlags(word);
+            Commands[CommandIndex]->SetFlags(word);
         }
 
         // If no delimiter, then add to misc
         else
         {
-            Commands[CommandIndex].SetArguments(word);
+            Commands[CommandIndex]->SetArguments(word);
         }
     }
 
@@ -76,9 +79,9 @@ void Manager::PrintCommands()
 {
     CommandIndex = 0;
 
-    for (vector<Command>::iterator command = Commands.begin(); command != Commands.end(); ++command)
+    for (vector<Command*>::iterator command = Commands.begin(); command != Commands.end(); ++command)
     {
-        cout << "Command Index: " + to_string(CommandIndex) + '\n' + command->PrintCommand() + '\n';
+        cout << "Command Index: " + to_string(CommandIndex) + '\n' + (*command)->PrintCommand() + '\n';
         CommandIndex++;
     }
 }
@@ -87,4 +90,75 @@ void Manager::ClearCommands()
 {
     Commands.clear();
     CommandIndex = 0;
+}
+
+Command* Manager::DetermineCommand(string cmd)
+{
+    // Command* command;
+    if (cmd == "ls")
+    {
+        // command = new LS();
+        return new LS();
+    }
+    // // mkdir
+    // else if (cmd == "mkdir")
+    // {
+
+    // }
+    // // cd
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // pwd
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // cp
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // mv
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // rm
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // rmdir
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // cat
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // less
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // tail
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // grep
+    // else if (cmd == "mkdir")
+    // {
+        
+    // }
+    // // wc
+    // else (cmd == "mkdir")
+    // {
+        
+    // }
+    return nullptr;
 }

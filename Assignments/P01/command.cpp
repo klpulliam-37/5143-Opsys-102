@@ -75,6 +75,6 @@ void Command::SetArguments(string _arguments)
 string Command::PrintCommand()
 {
     string commandStr;
-    commandStr = name + ' ' + GetFlags() + ' ' + GetArguments() + '\n';
+    commandStr = name + ' ' + GetFlags() + GetArguments() + '\n';
     return commandStr;
 }

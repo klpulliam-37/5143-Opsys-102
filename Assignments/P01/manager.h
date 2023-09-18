@@ -12,7 +12,7 @@ class Manager
 {
 private:
     // std::map<std::string, std::vector<std::string>> CmdMap;
-    std::vector<Command> Commands;
+    std::vector<Command*> Commands;
     int CommandIndex = 0;
 
 
@@ -22,9 +22,10 @@ public:
 
 private:
     void ParseCommand(std::string cmd);
-
-public:
-    void WaitForCommand();
     void PrintCommands();
     void ClearCommands();
+    Command* DetermineCommand(std::string cmd);
+
+public:
+   void WaitForCommand();
 };
