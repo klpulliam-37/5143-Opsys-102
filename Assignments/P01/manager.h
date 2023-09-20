@@ -22,9 +22,10 @@ public:
 
 private:
     void ParseCommand(std::string cmd);
-
-public:
-    void WaitForCommand();
     void PrintCommands();
     void ClearCommands();
+    Command* DetermineCommand(std::string cmd);
+
+public:
+   void WaitForCommand();
 };
