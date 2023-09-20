@@ -3,7 +3,7 @@
 #include <sstream>
 #include "manager.h"
 #include "command.h"
-#include "ls.h"
+#include "cmdtypes.h"
 
 using namespace std;
 
@@ -29,50 +29,43 @@ void Manager::ParseCommand(string cmdLine)
 
     // DetermineCommand(word);
 
-    cout << "First push" << '\n';
-    Commands.push_back(DetermineCommand(word));
-    cout << "After first push\n";
+    Commands.push_back(Command(word));
+
+    // Split on redirect which only appears after last command
+    // - should only handle redirect after last command
+    
+
+    // split on pipes '|'
+    // split command into command object
+    // only directive to look for is 'help'
+    // - what is a directive?
 
     // For every string, print it
     while (ss >> word)
-    {
-        cout << "ss >> word = " << word << '\n';
-        // Store strings based on:
-        // - cmd
-        // - flags going with cmd
-        // cout << word << '\n';
-        // cout << Commands[1].GetCmd();
-        
+    {        
         // If |, then create new cmd in CmdMap
         if (word == "|")
         {
-            cout << "word == |\n";
             CommandIndex++;
             ss >> word;
-            Commands.push_back(DetermineCommand(word));
-            cout << "end word == |\n";
+            Commands.push_back(Command(word));
         }
 
         // If -, then add as a flag to previous cmd
         else if (word[0] == '-') 
         {
-            cout << "word[0] == -\n";
-            Commands[CommandIndex]->SetFlags(word);
-            cout << "end word[0] == -\n";
+            Commands[CommandIndex].SetFlags(word);
         }
 
         // If no delimiter, then add to misc
         else
         {
-            cout << "add argument\n";
-            Commands[CommandIndex]->SetArguments(word);
-            cout << "end add argument\n";
+            Commands[CommandIndex].SetArguments(word);
         }
 
         cout << "Command Index: " << CommandIndex << '\n';
     }
 
-    cout << "Before print commands\n";
     PrintCommands();
 }
 
@@ -91,10 +84,10 @@ void Manager::PrintCommands()
 {
     CommandIndex = 0;
 
-    for (vector<Command*>::iterator command = Commands.begin(); command != Commands.end(); ++command)
+    for (vector<Command>::iterator command = Commands.begin(); command != Commands.end(); ++command)
     {
-        cout << "Printing Commands" << '\n';
-        cout << "Command Index: " + to_string(CommandIndex) + '\n' + (*command)->PrintCommand() + '\n';
+        // cout << "Printing Commands" << '\n';
+        cout << "Command Index: " + to_string(CommandIndex) + '\n' + command->PrintCommand() + '\n';
         CommandIndex++;
     }
 }
@@ -110,7 +103,7 @@ Command* Manager::DetermineCommand(string cmd)
     Command* command;
     if (cmd == "ls")
     {
-        command = new LS();
+        command = new LS(cmd);
         return command;
     }
     // // mkdir

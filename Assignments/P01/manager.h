@@ -12,7 +12,7 @@ class Manager
 {
 private:
     // std::map<std::string, std::vector<std::string>> CmdMap;
-    std::vector<Command*> Commands;
+    std::vector<Command> Commands;
     int CommandIndex = 0;
 
 
