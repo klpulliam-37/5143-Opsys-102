@@ -31,4 +31,6 @@ public:
     void SetArguments(string _arguments);
     string PrintCommand();
 
+    // virtual void Execute() = 0;
+
 };

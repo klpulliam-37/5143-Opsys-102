@@ -17,78 +17,85 @@ Manager::~Manager()
 
 }
 
-void Manager::ParseCommand(string cmdLine)
+void Manager::SplitCommand(string cmds)
 {
     // Create stream object and have it parse line into seperate strings
-    stringstream ss(cmdLine);
-    string word;
-
-    // Store first string as a cmd
-    ss >> word;
-    // Command->SetCmd(word);
-
-    // DetermineCommand(word);
-
-    Commands.push_back(Command(word));
+    stringstream ss(cmds);
+    string cmd;
 
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command
-    
 
     // split on pipes '|'
-    // split command into command object
-    // only directive to look for is 'help'
-    // - what is a directive?
-
-    // For every string, print it
-    while (ss >> word)
-    {        
-        // If |, then create new cmd in CmdMap
-        if (word == "|")
-        {
-            CommandIndex++;
-            ss >> word;
-            Commands.push_back(Command(word));
-        }
-
-        // If -, then add as a flag to previous cmd
-        else if (word[0] == '-') 
-        {
-            Commands[CommandIndex].SetFlags(word);
-        }
-
-        // If no delimiter, then add to misc
-        else
-        {
-            Commands[CommandIndex].SetArguments(word);
-        }
-
-        cout << "Command Index: " << CommandIndex << '\n';
+    while (!ss.eof())
+    {
+        getline(ss, cmd, '|');
+        Commands.push_back(CreateCommand(cmd));
     }
 
     PrintCommands();
 }
 
+Command Manager::CreateCommand(string cmd)
+{
+    // Create stream object and have it parse line into seperate strings
+    stringstream ss(cmd);
+    string part;
+    Command* cmdObj;
+
+    // Get command name
+    ss >> part;
+    cmdObj = DetermineCommand(part); // Determines command class based on command name
+
+    // split command into command object
+    // only directive to look for is 'help'
+    // - what is a directive?
+
+    // For every string, print it
+    while (ss >> part)
+    {        
+
+
+        // If -, then add as a flag to cmd
+        if (part[0] == '-') 
+        {
+            cmdObj->SetFlags(part);
+        }
+
+        // If no delimiter, then add to misc
+        else
+        {
+            cmdObj->SetArguments(part);
+        }
+
+        // cout << "Command Index: " << CommandIndex << '\n';
+    }
+
+    // PrintCommands();
+
+    return *cmdObj;
+}
+
 void Manager::WaitForCommand()
 {
-    string cmd;
+    string cmds;
     cout << "% ";
-    getline(cin, cmd);
+    getline(cin, cmds);
     // cout << cmd << '\n';
 
     ClearCommands();
-    ParseCommand(cmd);
+    SplitCommand(cmds);
 }
 
 void Manager::PrintCommands()
 {
-    CommandIndex = 0;
+    // CommandIndex = 0;
 
     for (vector<Command>::iterator command = Commands.begin(); command != Commands.end(); ++command)
     {
         // cout << "Printing Commands" << '\n';
-        cout << "Command Index: " + to_string(CommandIndex) + '\n' + command->PrintCommand() + '\n';
-        CommandIndex++;
+        cout << command->PrintCommand() + '\n';
+        // CommandIndex++;
     }
 }
 
@@ -166,5 +173,5 @@ Command* Manager::DetermineCommand(string cmd)
     // {
         
     // }
-    return nullptr;
+    return new Command(cmd);
 }
