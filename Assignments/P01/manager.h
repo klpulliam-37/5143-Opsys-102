@@ -21,7 +21,8 @@ public:
     ~Manager();
 
 private:
-    void ParseCommand(std::string cmd);
+    void SplitCommand(std::string cmds);
+    Command CreateCommand(std::string cmd);
     void PrintCommands();
     void ClearCommands();
     Command* DetermineCommand(std::string cmd);
