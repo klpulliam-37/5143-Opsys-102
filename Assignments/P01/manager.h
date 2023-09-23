@@ -23,6 +23,7 @@ public:
 private:
     void PrintCommands();
     void ClearCommands();
+    void ParseCommands(std::string cmds);
 
 public:
     void SetupManager();

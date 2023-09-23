@@ -150,5 +150,5 @@ void Parser::DetermineCommand(string cmd)
     }
 
 
-    managerRef->Commands.push_back(&command);
+    // managerRef->Commands.push_back(command);
 }
