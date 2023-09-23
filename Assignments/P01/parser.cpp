@@ -28,7 +28,6 @@ void Parser::SplitCommand(string cmds)
     // Create stream object and have it parse line into seperate strings
     stringstream ss(cmds);
     string cmdStr;
-    Command cmd;
 
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command
@@ -43,11 +42,6 @@ void Parser::SplitCommand(string cmds)
 
 void Parser::CreateCommand(string cmd)
 {
-    DetermineCommand(cmd);
-}
-
-void Parser::DetermineCommand(string cmd)
-{
     // Create stream object and have it parse line into seperate strings
     stringstream ss(cmd);
     string part;
@@ -55,10 +49,10 @@ void Parser::DetermineCommand(string cmd)
     // Get command name
     ss >> part;
     
-    Command command;
-    if (cmd == "ls")
+    Command* command;
+    if (part == "ls")
     {
-        command = LS(cmd);
+        command = new LS(cmd);
     }
     // // mkdir
     // else if (cmd == "mkdir")
@@ -73,7 +67,7 @@ void Parser::DetermineCommand(string cmd)
     // // pwd
     else if (cmd == "pwd")
     {
-        command = PWD(cmd);
+        command = new PWD(cmd);
     }
     // // cp
     // else if (cmd == "cp")
@@ -122,7 +116,7 @@ void Parser::DetermineCommand(string cmd)
     // }
     else
     {
-        command = Command("");
+        command = new Command("");
     }
 
     // split command into command object
@@ -130,25 +124,20 @@ void Parser::DetermineCommand(string cmd)
     // - what is a directive?
 
     // For every string, print it
-    while (ss >> part)
+    while (ss >> cmd)
     {        
-
-
         // If -, then add as a flag to cmd
-        if (part[0] == '-') 
+        if (cmd[0] == '-') 
         {
-            command.SetFlags(part);
+            command->SetFlags(cmd);
         }
 
         // If no delimiter, then add to misc
         else
         {
-            command.SetArguments(part);
+            command->SetArguments(cmd);
         }
-
-        // cout << "Command Index: " << CommandIndex << '\n';
     }
 
-
-    // managerRef->Commands.push_back(command);
+    managerRef->AddCommand(command);
 }
