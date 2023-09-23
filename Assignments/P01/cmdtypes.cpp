@@ -1,31 +1,23 @@
 #pragma once
 #include <iostream>
-#include <filesystem>
+#include <sstream>
 #include <string>
 
 #include "cmdtypes.h"
+#include "helper.h"
 
 using namespace std;
 
 string PWD::Execute(string input = "")
 {
-    string path;
+    string pwd = Helper::GetDir();
+    cout << pwd << '\n';
+    return pwd;
+}
 
-    if (input == "")
-    {
-        // something  here
-    }
-
-    path = filesystem::current_path();
-    
-    for (int i = 0; i < path.size(); i++)
-    {
-        if (path[i] == '"')
-        {
-            path.erase(i,1);
-        }
-    }
-
-    cout << path << '\n';
-    return path;
+string History::Execute(string input = "")
+{
+    string history = Helper::GetHistory();
+    cout << history;
+    return history;
 }

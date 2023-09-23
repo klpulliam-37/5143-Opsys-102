@@ -4,13 +4,13 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall
 
-SRCS = main.cpp manager.cpp parser.cpp command.cpp cmdtypes.cpp
+SRCS = main.cpp manager.cpp parser.cpp command.cpp cmdtypes.cpp helper.cpp
 
 # SRCS = main.cpp 
 
 OBJS = $(SRCS:.cpp=.o)
 
-DEPS = manager.h parser.h command.h cmdtypes.h
+DEPS = manager.h parser.h command.h cmdtypes.h helper.h
 
 # External libraries
 EXLIBS = -lncurses
