@@ -78,3 +78,9 @@ string Command::PrintCommand()
     commandStr = name + ' ' + GetFlags() + GetArguments() + '\n';
     return commandStr;
 }
+
+string Command::Execute(string input)
+{
+    cout << "Base Execute\n";
+    return "";
+}

@@ -14,7 +14,6 @@ public:
 private:
     string name;
     vector<string> flags;
-
     // Need to change this to vector<string> later for multiple redirects.
     string redirects; 
     vector<string> arguments;
@@ -31,6 +30,6 @@ public:
     void SetArguments(string _arguments);
     string PrintCommand();
 
-    // virtual void Execute() = 0;
+    virtual string Execute(string input);
 
 };

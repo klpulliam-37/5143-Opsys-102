@@ -2,6 +2,7 @@
 // #include <map>
 #include <vector>
 
+class Parser;
 class Command;
 
 // Maybe try and foward declare later?
@@ -11,9 +12,9 @@ class Command;
 class Manager
 {
 private:
-    // std::map<std::string, std::vector<std::string>> CmdMap;
     std::vector<Command> Commands;
     int CommandIndex = 0;
+    Parser* parser;
 
 
 public:
@@ -21,12 +22,15 @@ public:
     ~Manager();
 
 private:
-    void SplitCommand(std::string cmds);
-    Command CreateCommand(std::string cmd);
     void PrintCommands();
     void ClearCommands();
-    Command* DetermineCommand(std::string cmd);
 
 public:
-   void WaitForCommand();
+    void SetupManager();
+    void WaitForCommand();
+    void AddCommand(Command* command);
+    void ExecuteCommands();
+
+    void TestDeriv();
+
 };
