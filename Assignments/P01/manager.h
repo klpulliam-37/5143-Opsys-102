@@ -23,14 +23,14 @@ public:
 private:
     void PrintCommands();
     void ClearCommands();
-    void ParseCommands(std::string cmds);
+    // void ParseCommands(std::string cmds);
 
 public:
     void SetupManager();
     void WaitForCommand();
-    void AddCommand(Command& command);
+    void AddCommand(Command* command);
     void ExecuteCommands();
 
-    void TestDeriv();
+    // void TestDeriv();
 
 };

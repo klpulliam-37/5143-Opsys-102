@@ -17,7 +17,6 @@ protected:
 public:
     void SplitCommand(std::string cmds);
     void CreateCommand(std::string cmd);
-    void DetermineCommand(std::string cmd);
 
     void SetManager(Manager* manager);
 };
