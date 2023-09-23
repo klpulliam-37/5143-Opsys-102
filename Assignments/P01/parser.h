@@ -1,5 +1,8 @@
 #pragma once
 
+class Manager;
+class Command;
+
 class Parser
 {
 public:
@@ -7,9 +10,14 @@ public:
     ~Parser();
 
 private:
+    Manager* managerRef;
 
 protected:
 
 public:
-    void Print();
+    void SplitCommand(std::string cmds);
+    void CreateCommand(std::string cmd);
+    void DetermineCommand(std::string cmd);
+
+    void SetManager(Manager* manager);
 };

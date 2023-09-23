@@ -1,7 +1,10 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <typeinfo>
 #include "manager.h"
+#include "parser.h"
 #include "command.h"
 #include "cmdtypes.h"
 
@@ -9,7 +12,7 @@ using namespace std;
 
 Manager::Manager()
 {
-
+    parser = new Parser();
 }
 
 Manager::~Manager()
@@ -17,63 +20,9 @@ Manager::~Manager()
 
 }
 
-void Manager::SplitCommand(string cmds)
+void Manager::SetupManager()
 {
-    // Create stream object and have it parse line into seperate strings
-    stringstream ss(cmds);
-    string cmd;
-
-    // Split on redirect which only appears after last command
-    // - should only handle redirect after last command
-
-    // split on pipes '|'
-    while (!ss.eof())
-    {
-        getline(ss, cmd, '|');
-        Commands.push_back(CreateCommand(cmd));
-    }
-
-    PrintCommands();
-}
-
-Command Manager::CreateCommand(string cmd)
-{
-    // Create stream object and have it parse line into seperate strings
-    stringstream ss(cmd);
-    string part;
-    Command* cmdObj;
-
-    // Get command name
-    ss >> part;
-    cmdObj = DetermineCommand(part); // Determines command class based on command name
-
-    // split command into command object
-    // only directive to look for is 'help'
-    // - what is a directive?
-
-    // For every string, print it
-    while (ss >> part)
-    {        
-
-
-        // If -, then add as a flag to cmd
-        if (part[0] == '-') 
-        {
-            cmdObj->SetFlags(part);
-        }
-
-        // If no delimiter, then add to misc
-        else
-        {
-            cmdObj->SetArguments(part);
-        }
-
-        // cout << "Command Index: " << CommandIndex << '\n';
-    }
-
-    // PrintCommands();
-
-    return *cmdObj;
+    parser->SetManager(this);
 }
 
 void Manager::WaitForCommand()
@@ -81,37 +30,75 @@ void Manager::WaitForCommand()
     string cmds;
     cout << "% ";
     getline(cin, cmds);
-    // cout << cmd << '\n';
 
+    // parser->SplitCommand(cmds);
+    ParseCommands(cmds);
+    PrintCommands();
+    ExecuteCommands();
     ClearCommands();
-    SplitCommand(cmds);
+}
+
+void Manager::AddCommand(Command& command)
+{
+    cout << "AddCommand: " << command.Execute("") << '\n';
+    Commands.push_back(&command);
+}
+
+void Manager::ExecuteCommands()
+{
+    cout << "ExecuteCommand: \n";
+    // Command* command;
+    for (int i = 0; i < Commands.size(); i++)
+    {
+        // command = Commands.at(i);
+        Commands.at(i)->Execute("");
+    }
 }
 
 void Manager::PrintCommands()
 {
-    // CommandIndex = 0;
-
-    for (vector<Command>::iterator command = Commands.begin(); command != Commands.end(); ++command)
+    Command* command;
+    for (int i = 0; i < Commands.size(); i++)
     {
-        // cout << "Printing Commands" << '\n';
+        command = Commands.at(i);
+        // cout << typeid(command).name() << '\n';
         cout << command->PrintCommand() + '\n';
-        // CommandIndex++;
     }
 }
 
 void Manager::ClearCommands()
 {
     Commands.clear();
-    CommandIndex = 0;
+    // CommandIndex = 0;
 }
 
-Command* Manager::DetermineCommand(string cmd)
+void Manager::ParseCommands(string cmds)
 {
-    Command* command;
+    // Create stream object and have it parse line into seperate strings
+    stringstream ss(cmds);
+    string cmdStr;
+    Command* command;    
+
+    // Split on redirect which only appears after last command
+    // - should only handle redirect after last command
+
+    // split on pipes '|'
+    while (!ss.eof())
+    {
+        getline(ss, cmdStr, '|');
+        
+    }
+
+    // Create stream object and have it parse line into seperate strings
+    stringstream ss2(cmdStr);
+    string cmd;
+
+    // Get command name
+    ss2 >> cmd;
+    
     if (cmd == "ls")
     {
         command = new LS(cmd);
-        return command;
     }
     // // mkdir
     // else if (cmd == "mkdir")
@@ -119,59 +106,99 @@ Command* Manager::DetermineCommand(string cmd)
 
     // }
     // // cd
-    // else if (cmd == "mkdir")
+    // else if (cmd == "cd")
     // {
         
     // }
     // // pwd
-    // else if (cmd == "mkdir")
-    // {
-        
-    // }
+    else if (cmd == "pwd")
+    {
+        cout << "CommandType: PWD\n";
+        command = new PWD(cmd);
+    }
     // // cp
-    // else if (cmd == "mkdir")
+    // else if (cmd == "cp")
     // {
         
     // }
     // // mv
-    // else if (cmd == "mkdir")
+    // else if (cmd == "mv")
     // {
         
     // }
     // // rm
-    // else if (cmd == "mkdir")
+    // else if (cmd == "rm")
     // {
         
     // }
     // // rmdir
-    // else if (cmd == "mkdir")
+    // else if (cmd == "rmdir")
     // {
         
     // }
     // // cat
-    // else if (cmd == "mkdir")
+    // else if (cmd == "cat")
     // {
         
     // }
     // // less
-    // else if (cmd == "mkdir")
+    // else if (cmd == "less")
     // {
         
     // }
     // // tail
-    // else if (cmd == "mkdir")
+    // else if (cmd == "tail")
     // {
         
     // }
     // // grep
-    // else if (cmd == "mkdir")
+    // else if (cmd == "grep")
     // {
         
     // }
     // // wc
-    // else (cmd == "mkdir")
+    // else if (cmd == "wc")
     // {
         
     // }
-    return new Command(cmd);
+    else
+    {
+        command = new Command("");
+    }
+
+    // split command into command object
+    // only directive to look for is 'help'
+    // - what is a directive?
+
+    // For every string, print it
+    while (ss2 >> cmd)
+    {        
+
+
+        // If -, then add as a flag to cmd
+        if (cmd[0] == '-') 
+        {
+            command->SetFlags(cmd);
+        }
+
+        // If no delimiter, then add to misc
+        else
+        {
+            command->SetArguments(cmd);
+        }
+
+        // cout << "Command Index: " << CommandIndex << '\n';
+    }
+
+    // cout << "AddCommand: " << command.Execute("") << '\n';
+    Commands.push_back(command);
+}
+
+void Manager::TestDeriv()
+{
+    vector<Command*> TestCmds;
+    PWD pwd("pwd");
+    TestCmds.push_back(&pwd);
+    // Command* cmd = &pwd;
+    TestCmds.at(0)->Execute("");
 }

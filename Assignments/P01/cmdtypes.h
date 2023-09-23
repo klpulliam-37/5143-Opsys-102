@@ -9,3 +9,14 @@ public:
 private:
 
 };
+
+class PWD: public Command
+{
+public:
+    PWD(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+
+private:
+
+};
