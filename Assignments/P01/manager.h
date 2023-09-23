@@ -12,10 +12,9 @@ class Command;
 class Manager
 {
 private:
-    std::vector<Command> Commands;
+    std::vector<Command*> Commands;
     int CommandIndex = 0;
     Parser* parser;
-
 
 public:
     Manager();
@@ -28,7 +27,7 @@ private:
 public:
     void SetupManager();
     void WaitForCommand();
-    void AddCommand(Command* command);
+    void AddCommand(Command& command);
     void ExecuteCommands();
 
     void TestDeriv();

@@ -37,57 +37,28 @@ void Parser::SplitCommand(string cmds)
     while (!ss.eof())
     {
         getline(ss, cmdStr, '|');
-        // Command* command = CreateCommand(cmdStr);
-        managerRef->AddCommand(CreateCommand(cmdStr));
+        CreateCommand(cmdStr);
     }
 }
 
-Command* Parser::CreateCommand(string cmd)
+void Parser::CreateCommand(string cmd)
+{
+    DetermineCommand(cmd);
+}
+
+void Parser::DetermineCommand(string cmd)
 {
     // Create stream object and have it parse line into seperate strings
     stringstream ss(cmd);
     string part;
-    Command* cmdPtr;
 
     // Get command name
     ss >> part;
-    Command command = DetermineCommand(part);
-    cmdPtr = &command; // Determines command class based on command name
-
-    // split command into command object
-    // only directive to look for is 'help'
-    // - what is a directive?
-
-    // For every string, print it
-    while (ss >> part)
-    {        
-
-
-        // If -, then add as a flag to cmd
-        if (part[0] == '-') 
-        {
-            cmdPtr->SetFlags(part);
-        }
-
-        // If no delimiter, then add to misc
-        else
-        {
-            cmdPtr->SetArguments(part);
-        }
-
-        // cout << "Command Index: " << CommandIndex << '\n';
-    }
-
-    // PrintCommands();
-
-    return cmdPtr;
-}
-
-Command Parser::DetermineCommand(string cmd)
-{
+    
+    Command command;
     if (cmd == "ls")
     {
-        return LS(cmd);
+        command = LS(cmd);
     }
     // // mkdir
     // else if (cmd == "mkdir")
@@ -102,7 +73,7 @@ Command Parser::DetermineCommand(string cmd)
     // // pwd
     else if (cmd == "pwd")
     {
-        return PWD(cmd);
+        command = PWD(cmd);
     }
     // // cp
     // else if (cmd == "cp")
@@ -145,9 +116,39 @@ Command Parser::DetermineCommand(string cmd)
         
     // }
     // // wc
-    // else (cmd == "wc")
+    // else if (cmd == "wc")
     // {
         
     // }
-    return Command(cmd);
+    else
+    {
+        command = Command("");
+    }
+
+    // split command into command object
+    // only directive to look for is 'help'
+    // - what is a directive?
+
+    // For every string, print it
+    while (ss >> part)
+    {        
+
+
+        // If -, then add as a flag to cmd
+        if (part[0] == '-') 
+        {
+            command.SetFlags(part);
+        }
+
+        // If no delimiter, then add to misc
+        else
+        {
+            command.SetArguments(part);
+        }
+
+        // cout << "Command Index: " << CommandIndex << '\n';
+    }
+
+
+    managerRef->Commands.push_back(&command);
 }

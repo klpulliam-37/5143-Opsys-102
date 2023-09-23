@@ -32,32 +32,36 @@ void Manager::WaitForCommand()
     getline(cin, cmds);
 
     parser->SplitCommand(cmds);
-    // PrintCommands();
+    PrintCommands();
     ExecuteCommands();
     ClearCommands();
 }
 
-void Manager::AddCommand(Command* command)
+void Manager::AddCommand(Command& command)
 {
-    Commands.push_back(*command);
+    cout << "AddCommand: " << command.Execute("") << '\n';
+    Commands.push_back(&command);
 }
 
 void Manager::ExecuteCommands()
 {
-    Command* command;
+    cout << "ExecuteCommand: \n";
+    // Command* command;
     for (int i = 0; i < Commands.size(); i++)
     {
-        command = &Commands[i];
-        command->Execute("");
+        // command = Commands.at(i);
+        Commands.at(i)->Execute("");
     }
 }
 
 void Manager::PrintCommands()
 {
-    for (vector<Command>::iterator command = Commands.begin(); command != Commands.end(); ++command)
+    Command* command;
+    for (int i = 0; i < Commands.size(); i++)
     {
-        cout << typeid(command).name() << '\n';
-        // cout << command->PrintCommand() + '\n';
+        command = Commands.at(i);
+        // cout << typeid(command).name() << '\n';
+        cout << command->PrintCommand() + '\n';
     }
 }
 
@@ -69,7 +73,9 @@ void Manager::ClearCommands()
 
 void Manager::TestDeriv()
 {
+    vector<Command*> TestCmds;
     PWD pwd("pwd");
-    Command* cmd = &pwd;
-    cmd->Execute("");
+    TestCmds.push_back(&pwd);
+    // Command* cmd = &pwd;
+    TestCmds.at(0)->Execute("");
 }
