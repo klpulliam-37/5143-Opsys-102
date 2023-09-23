@@ -6,6 +6,8 @@ class LS: public Command
 public: 
     LS(string cmd) : Command(cmd) {};
 
+    // string Execute(string input) override;
+
 private:
 
 };
@@ -19,4 +21,12 @@ public:
 
 private:
 
+};
+
+class History: public Command
+{
+public:
+    History(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
 };

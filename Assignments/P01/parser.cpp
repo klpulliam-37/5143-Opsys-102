@@ -5,6 +5,7 @@
 #include "manager.h"
 #include "command.h"
 #include "cmdtypes.h"
+#include "helper.h"
 
 using namespace std;
 
@@ -29,6 +30,10 @@ void Parser::SplitCommand(string cmds)
     stringstream ss(cmds);
     string cmdStr;
 
+    if (cmds != "history")
+    {
+        Helper::UpdateHistory(cmds);
+    } 
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command
 
@@ -114,6 +119,10 @@ void Parser::CreateCommand(string cmd)
     // {
         
     // }
+    else if (cmd == "history")
+    {
+        command = new History(cmd);
+    }
     else
     {
         command = new Command("");

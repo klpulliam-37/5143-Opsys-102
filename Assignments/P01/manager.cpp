@@ -7,6 +7,7 @@
 #include "parser.h"
 #include "command.h"
 #include "cmdtypes.h"
+#include "helper.h"
 
 using namespace std;
 
@@ -27,8 +28,11 @@ void Manager::SetupManager()
 
 void Manager::WaitForCommand()
 {
+    string path = Helper::GetDir();
+    string termPath = Helper::FormatDir(path);
     string cmds;
-    cout << "% ";
+
+    cout << termPath;
     getline(cin, cmds);
 
     parser->SplitCommand(cmds);
