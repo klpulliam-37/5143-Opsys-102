@@ -23,7 +23,13 @@ string Command::GetCmd()
 {
     return name;
 }
-string Command::GetFlags() 
+
+vector<string> Command::GetFlags()
+{
+    return flags;
+}
+
+string Command::PrintFlags() 
 {
     string flagsStr;
 
@@ -75,7 +81,7 @@ void Command::SetArguments(string _arguments)
 string Command::PrintCommand()
 {
     string commandStr;
-    commandStr = name + ' ' + GetFlags() + GetArguments() + '\n';
+    commandStr = name + ' ' + PrintFlags() + GetArguments() + '\n';
     return commandStr;
 }
 
