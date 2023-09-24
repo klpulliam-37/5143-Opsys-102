@@ -20,7 +20,7 @@ private:
 
 public:
     string GetCmd();
-    string GetFlags();
+    vector<string> GetFlags();
     string GetRedirects();
     string GetArguments();
 
@@ -28,6 +28,7 @@ public:
     void SetFlags(string flag);
     void SetRedirects(string _redirects);
     void SetArguments(string _arguments);
+    string PrintFlags();
     string PrintCommand();
 
     virtual string Execute(string input);

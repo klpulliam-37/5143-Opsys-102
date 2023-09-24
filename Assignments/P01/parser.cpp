@@ -58,7 +58,6 @@ void Parser::SplitCommand(string cmds)
             CreateCommand(cmdStr);
         }
     }else{
-        cout << "No Redirect.\n";
         // split on pipes '|'
         while (!ss.eof())
         {

@@ -9,7 +9,9 @@ public:
     string Execute(string input) override;
 
 private:
-
+    bool showHidden = false;
+    bool longListing = false;
+    bool humanReadable = false;
 };
 
 class PWD: public Command
