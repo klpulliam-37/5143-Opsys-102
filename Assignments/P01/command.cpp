@@ -82,7 +82,7 @@ string Command::PrintCommand()
 string Command::Execute(string input)
 {
     // cout << "Base Execute\n";
-    cout << "Input: " << input << '\n';
-    cout << "Flags: " << GetFlags() << '\n';
+    // cout << "Input: " << input << '\n';
+    // cout << "Flags: " << GetFlags() << '\n';
     return "";
 }

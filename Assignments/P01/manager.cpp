@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <sstream>
 #include <typeinfo>
@@ -40,6 +41,7 @@ void Manager::WaitForCommand()
     // PrintCommands();
     ExecuteCommands();
     ClearCommands();
+    SetORedirect(false, ""); // Reset redirect
 }
 
 void Manager::AddCommand(Command* command)
@@ -53,6 +55,12 @@ void Manager::ExecuteCommands()
     for (int i = 0; i < Commands.size(); i++)
     {
         input = Commands.at(i)->Execute(input);
+    }
+
+    if (hasRedirectO)
+    {
+        ofstream output(outfile);
+        output << input;
     }
 }
 
@@ -71,9 +79,11 @@ void Manager::ClearCommands()
     Commands.clear();
 }
 
-void Manager::SetORedirect(bool _hasRedirectO, string outfile)
+void Manager::SetORedirect(bool _hasRedirectO, string output)
 {
     hasRedirectO = _hasRedirectO;
+    outfile = output + ".txt";
+    Helper::SetHasRedirectO(_hasRedirectO);
 }
 
 // void Manager::SetInput(string _input)
