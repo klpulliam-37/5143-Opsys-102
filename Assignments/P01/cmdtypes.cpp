@@ -10,6 +10,8 @@ using namespace std;
 
 string PWD::Execute(string input = "")
 {
+    Command::Execute(input);
+
     string pwd = Helper::GetDir();
     cout << pwd << '\n';
     return pwd;
@@ -17,6 +19,8 @@ string PWD::Execute(string input = "")
 
 string History::Execute(string input = "")
 {
+    Command::Execute(input);
+    
     string history = Helper::GetHistory();
     cout << history;
     return history;

@@ -49,9 +49,10 @@ void Manager::AddCommand(Command* command)
 
 void Manager::ExecuteCommands()
 {
+    string input = "";
     for (int i = 0; i < Commands.size(); i++)
     {
-        Commands.at(i)->Execute("");
+        input = Commands.at(i)->Execute(input);
     }
 }
 
@@ -69,6 +70,21 @@ void Manager::ClearCommands()
 {
     Commands.clear();
 }
+
+void Manager::SetORedirect(bool _hasRedirectO, string outfile)
+{
+    hasRedirectO = _hasRedirectO;
+}
+
+// void Manager::SetInput(string _input)
+// {
+//     input = _input;
+// }
+
+// string Manager::GetInput()
+// {
+//     return input;
+// }
 
 // void Manager::ParseCommands(string cmds)
 // {
