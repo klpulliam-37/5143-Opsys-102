@@ -73,32 +73,32 @@ string LS::Execute(string input = "")
                     cout << filepath.back() << '\n';
                 }
                 // -l
-                else if (showHidden && !longListing && !humanReadable)
+                else if (!showHidden && longListing && !humanReadable)
                 {
                     
                 }
                 // -h
-                else if (showHidden && !longListing && !humanReadable)
+                else if (!showHidden && !longListing && humanReadable)
                 {
                     
                 }
                 // -al
-                else if (showHidden && !longListing && !humanReadable)
+                else if (showHidden && longListing && !humanReadable)
                 {
                     
                 }
                 // -ah
-                else if (showHidden && !longListing && !humanReadable)
+                else if (showHidden && !longListing && humanReadable)
                 {
                     
                 }
                 // -lh
-                else if (showHidden && !longListing && !humanReadable)
+                else if (!showHidden && longListing && humanReadable)
                 {
                     
                 }
                 // -alh
-                else if (showHidden && !longListing && !humanReadable)
+                else if (showHidden && longListing && humanReadable)
                 {
                     
                 }
