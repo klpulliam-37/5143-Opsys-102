@@ -7,6 +7,7 @@
 using namespace std;
 
 std::vector<std::string> Helper::History;
+bool Helper::HasRedirectO;
 
 string Helper::GetDir()
 {
@@ -52,4 +53,14 @@ string Helper::GetHistory()
     }
 
     return list;
+}
+
+void Helper::SetHasRedirectO(bool _hasRedirectO)
+{
+    HasRedirectO = _hasRedirectO;
+}
+
+bool Helper::GetHasRedirectO()
+{
+    return HasRedirectO;
 }

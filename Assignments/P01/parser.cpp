@@ -29,33 +29,52 @@ void Parser::SplitCommand(string cmds)
     // Create stream object and have it parse line into seperate strings
     stringstream ss(cmds);
     string cmdStr;
+    string output;
 
     if (cmds != "history")
     {
         Helper::UpdateHistory(cmds);
     } 
+
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command
-
-    // split on pipes '|'
-    while (!ss.eof())
+    if (cmds.find('>'))
     {
-        getline(ss, cmdStr, '|');
-        CreateCommand(cmdStr);
+        getline(ss, cmdStr, '>');
+        getline(ss, output);
+
+        managerRef->SetORedirect(true, output);
+
+        stringstream ssr(cmdStr);
+        // split on pipes '|'
+        while (!ssr.eof())
+        {
+            // cout << "Command String: |" << cmdStr << "|\n";
+            getline(ssr, cmdStr, '|');
+            CreateCommand(cmdStr);
+        }
+    }else{
+        // split on pipes '|'
+        while (!ss.eof())
+        {
+            // cout << "Command String: |" << cmdStr << "|\n";
+            getline(ss, cmdStr, '|');
+            CreateCommand(cmdStr);
+        }
     }
 }
 
-void Parser::CreateCommand(string cmd)
+void Parser::CreateCommand(string cmdStr)
 {
     // Create stream object and have it parse line into seperate strings
-    stringstream ss(cmd);
-    string part;
+    stringstream ss(cmdStr);
+    string cmd;
 
     // Get command name
-    ss >> part;
+    ss >> cmd;
     
     Command* command;
-    if (part == "ls")
+    if (cmd == "ls")
     {
         command = new LS(cmd);
     }
