@@ -14,8 +14,8 @@ private:
     std::vector<Command*> Commands;
     Parser* parser;
     // string altInput;
-    bool hasRedirectO = false;
-    std::string outfile;
+    // bool hasRedirectO = false;
+    // std::string outfile;
 
 public:
     Manager();
@@ -33,7 +33,7 @@ public:
     void ExecuteCommands();
     // void SetInput(string _input);
     // string GetInput();
-    void SetORedirect(bool _hasRedirectO, std::string outfile);
+    // void SetORedirect(bool _hasRedirectO, std::string outfile);
 
     // void TestDeriv();
 

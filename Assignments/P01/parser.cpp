@@ -38,12 +38,16 @@ void Parser::SplitCommand(string cmds)
 
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command
-    if (cmds.find('>'))
+    if (cmds.find('>') != string::npos)
     {
         getline(ss, cmdStr, '>');
         getline(ss, output);
 
-        managerRef->SetORedirect(true, output);
+        output.erase(0, 1);
+
+        // cout << "ParseRedir: " << Helper::GetHasRedirectO() << '\n';
+        Helper::SetHasRedirectO(true, output);
+        // cout << "ParseRedir: " << Helper::GetHasRedirectO() << '\n';
 
         stringstream ssr(cmdStr);
         // split on pipes '|'
@@ -54,6 +58,7 @@ void Parser::SplitCommand(string cmds)
             CreateCommand(cmdStr);
         }
     }else{
+        cout << "No Redirect.\n";
         // split on pipes '|'
         while (!ss.eof())
         {

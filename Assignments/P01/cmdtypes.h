@@ -6,7 +6,7 @@ class LS: public Command
 public: 
     LS(string cmd) : Command(cmd) {};
 
-    // string Execute(string input) override;
+    string Execute(string input) override;
 
 private:
 
