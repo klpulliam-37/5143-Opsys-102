@@ -7,6 +7,7 @@ class Helper
 private:
     std::vector<std::string> static History;
     static bool HasRedirectO;
+    static std::string Outfile;
 
 public:
     Helper();
@@ -14,6 +15,7 @@ public:
     std::string static FormatDir(std::string path);
     void static UpdateHistory(std::string command);
     std::string static GetHistory();
-    void static SetHasRedirectO(bool _hasRedirectO);
+    void static SetHasRedirectO(bool _hasRedirectO, std::string output);
     bool static GetHasRedirectO();
+    std::string static GetOutfile();
 };

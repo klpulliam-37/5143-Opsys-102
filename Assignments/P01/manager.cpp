@@ -36,12 +36,13 @@ void Manager::WaitForCommand()
     cout << termPath;
     getline(cin, cmds);
 
+    // Helper::SetHasRedirectO(false, ""); // Reset redirect
     parser->SplitCommand(cmds);
     // ParseCommands(cmds);
     // PrintCommands();
     ExecuteCommands();
     ClearCommands();
-    SetORedirect(false, ""); // Reset redirect
+    Helper::SetHasRedirectO(false, ""); // Reset redirect
 }
 
 void Manager::AddCommand(Command* command)
@@ -57,9 +58,9 @@ void Manager::ExecuteCommands()
         input = Commands.at(i)->Execute(input);
     }
 
-    if (hasRedirectO)
+    if (Helper::GetHasRedirectO())
     {
-        ofstream output(outfile);
+        ofstream output(Helper::GetOutfile());
         output << input;
     }
 }
@@ -79,12 +80,12 @@ void Manager::ClearCommands()
     Commands.clear();
 }
 
-void Manager::SetORedirect(bool _hasRedirectO, string output)
-{
-    hasRedirectO = _hasRedirectO;
-    outfile = output + ".txt";
-    Helper::SetHasRedirectO(_hasRedirectO);
-}
+// void Manager::SetORedirect(bool _hasRedirectO, string output)
+// {
+//     // hasRedirectO = _hasRedirectO;
+//     outfile = output;
+//     Helper::SetHasRedirectO(_hasRedirectO);
+// }
 
 // void Manager::SetInput(string _input)
 // {
