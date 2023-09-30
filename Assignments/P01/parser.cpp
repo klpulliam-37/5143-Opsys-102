@@ -31,10 +31,7 @@ void Parser::SplitCommand(string cmds)
     string cmdStr;
     string output;
 
-    if (cmds != "history")
-    {
-        Helper::UpdateHistory(cmds);
-    } 
+    Helper::UpdateHistory(cmds);
 
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command

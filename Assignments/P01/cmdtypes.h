@@ -32,3 +32,11 @@ public:
 
     string Execute(string input) override;
 };
+
+class HistoryIndex: public Command
+{
+public:
+    HistoryIndex(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
