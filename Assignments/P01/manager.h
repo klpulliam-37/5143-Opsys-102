@@ -28,7 +28,9 @@ private:
 
 public:
     void SetupManager();
-    void WaitForCommand();
+    void LoadHistory();
+    void SaveHistory();
+    bool WaitForCommand();
     void AddCommand(Command* command);
     void ExecuteCommands();
     // void SetInput(string _input);

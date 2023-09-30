@@ -19,15 +19,52 @@ Manager::Manager()
 
 Manager::~Manager()
 {
-
+    SaveHistory();
+    delete parser;
 }
 
 void Manager::SetupManager()
 {
+    LoadHistory();
+
     parser->SetManager(this);
 }
 
-void Manager::WaitForCommand()
+// Need to handle saving history to file when program closes
+void Manager::LoadHistory()
+{
+    // Load file line by line into history vector
+    ifstream historyfile(".history");
+    string cmd;
+
+    if (historyfile.is_open())
+    {
+        while(getline(historyfile, cmd))
+        {
+            Helper::UpdateHistory(cmd);
+        }
+    }
+    else
+    {
+        cout << "LoadHistory: .history could not be loaded" << endl;
+    }
+}
+
+void Manager::SaveHistory()
+{
+    ofstream historyfile(".history", ios::app);
+
+    if (historyfile.is_open())
+    {
+        historyfile << Helper::GetHistory();
+    }
+    else
+    {
+        cout << "SaveHistory: .history could not be loaded" << endl;
+    }
+}
+
+bool Manager::WaitForCommand()
 {
     string path = Helper::GetDir();
     string termPath = Helper::FormatDir(path);
@@ -36,6 +73,11 @@ void Manager::WaitForCommand()
     cout << termPath;
     getline(cin, cmds);
 
+    if (cmds == "exit")
+    {
+        return false;
+    }
+
     // Helper::SetHasRedirectO(false, ""); // Reset redirect
     parser->SplitCommand(cmds);
     // ParseCommands(cmds);
@@ -43,6 +85,7 @@ void Manager::WaitForCommand()
     ExecuteCommands();
     ClearCommands();
     Helper::SetHasRedirectO(false, ""); // Reset redirect
+    return true;
 }
 
 void Manager::AddCommand(Command* command)

@@ -27,14 +27,16 @@ int main()
     // Base* b = &d;
     // b->print();
 
+    bool shouldRun = true;
     Manager* manager = new Manager();
     manager->SetupManager();
 
     // manager->TestDeriv();
 
-    while(true)
+    while(shouldRun)
     {
-        manager->WaitForCommand();
+        shouldRun = manager->WaitForCommand();
     }
+    manager->SaveHistory();
     return 0;
 }

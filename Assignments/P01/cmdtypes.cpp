@@ -73,32 +73,32 @@ string LS::Execute(string input = "")
                     cout << filepath.back() << '\n';
                 }
                 // -l
-                else if (showHidden && !longListing && !humanReadable)
+                else if (!showHidden && longListing && !humanReadable)
                 {
                     
                 }
                 // -h
-                else if (showHidden && !longListing && !humanReadable)
+                else if (!showHidden && !longListing && humanReadable)
                 {
                     
                 }
                 // -al
-                else if (showHidden && !longListing && !humanReadable)
+                else if (showHidden && longListing && !humanReadable)
                 {
                     
                 }
                 // -ah
-                else if (showHidden && !longListing && !humanReadable)
+                else if (showHidden && !longListing && humanReadable)
                 {
                     
                 }
                 // -lh
-                else if (showHidden && !longListing && !humanReadable)
+                else if (!showHidden && longListing && humanReadable)
                 {
                     
                 }
                 // -alh
-                else if (showHidden && !longListing && !humanReadable)
+                else if (showHidden && longListing && humanReadable)
                 {
                     
                 }
@@ -130,11 +130,26 @@ string PWD::Execute(string input = "")
 string History::Execute(string input = "")
 {
     Command::Execute(input);
+    // Be sure to adjust index to index - 1 when 
+    // accessing history list in manager.
+    int historyIndex = 1;
 
     string history = Helper::GetHistory();
+    stringstream ss(history);
     if (!Helper::GetHasRedirectO())
     {
-        cout << history;
+        string command = "";
+        while(ss >> command)
+        {
+            cout << historyIndex++ << " " << command << "\n";
+        }
     }
     return history;
+}
+
+string HistoryIndex::Execute(string input = "")
+{
+    Command::Execute(input);
+
+    
 }
