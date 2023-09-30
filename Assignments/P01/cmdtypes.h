@@ -1,6 +1,8 @@
 #pragma once
 #include "command.h"
 
+class Manager;
+
 class LS: public Command
 {
 public: 
@@ -35,8 +37,11 @@ public:
 
 class HistoryIndex: public Command
 {
+private:
+    Manager* managerRef;
+
 public:
-    HistoryIndex(string cmd) : Command(cmd) {};
+    HistoryIndex(string cmd, Manager* _managerRef) : Command(cmd) {managerRef = _managerRef;};
 
     string Execute(string input) override;
 };

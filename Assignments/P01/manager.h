@@ -33,6 +33,9 @@ public:
     bool WaitForCommand();
     void AddCommand(Command* command);
     void ExecuteCommands();
+
+    friend class HistoryIndex;
+
     // void SetInput(string _input);
     // string GetInput();
     // void SetORedirect(bool _hasRedirectO, std::string outfile);
