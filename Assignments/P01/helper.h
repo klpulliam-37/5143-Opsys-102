@@ -15,6 +15,8 @@ public:
     std::string static FormatDir(std::string path);
     void static UpdateHistory(std::string command);
     std::string static GetHistory();
+    std::string static GetCommandAtHistoryIndex(int index);
+    int static GetHistorySize();
     void static SetHasRedirectO(bool _hasRedirectO, std::string output);
     bool static GetHasRedirectO();
     std::string static GetOutfile();

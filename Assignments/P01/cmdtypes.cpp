@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include <algorithm>
 
+#include "manager.h"
+#include "parser.h"
 #include "cmdtypes.h"
 #include "helper.h"
 
@@ -151,5 +153,19 @@ string HistoryIndex::Execute(string input = "")
 {
     Command::Execute(input);
 
-    
+    int commandIndex = stoi(GetCmd().erase(0,1));
+    // cout << "Index: " << commandIndex << endl;
+    // need to get specified index from parser, so index check logic goes here
+    if (commandIndex < 1 || commandIndex > Helper::GetHistorySize())
+    {
+        cout << "WARNING: Invalid Index for !x command.\n";
+        return "";
+    }
+    else
+    {
+        // cout << "Command At Index: " << commandIndex << " -> " << Helper::GetCommandAtHistoryIndex(commandIndex) << endl;
+        managerRef->parser->SplitCommand(Helper::GetCommandAtHistoryIndex(commandIndex - 1));
+    }
+
+    // use managerRef to reparse command
 }

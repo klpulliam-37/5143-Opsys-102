@@ -31,7 +31,10 @@ void Parser::SplitCommand(string cmds)
     string cmdStr;
     string output;
 
-    Helper::UpdateHistory(cmds);
+    if (cmds.find('!') == string::npos)
+    {
+        Helper::UpdateHistory(cmds);
+    }
 
     // Split on redirect which only appears after last command
     // - should only handle redirect after last command
@@ -142,6 +145,10 @@ void Parser::CreateCommand(string cmdStr)
     else if (cmd == "history")
     {
         command = new History(cmd);
+    }
+    else if (cmd[0] == '!')
+    {
+        command = new HistoryIndex(cmd, managerRef);
     }
     else
     {

@@ -78,7 +78,6 @@ bool Manager::WaitForCommand()
         return false;
     }
 
-    // Helper::SetHasRedirectO(false, ""); // Reset redirect
     parser->SplitCommand(cmds);
     // ParseCommands(cmds);
     // PrintCommands();

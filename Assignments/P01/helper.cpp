@@ -56,6 +56,16 @@ string Helper::GetHistory()
     return list;
 }
 
+string Helper::GetCommandAtHistoryIndex(int index)
+{
+    return History.at(index);
+}
+
+int Helper::GetHistorySize()
+{
+    return History.size();
+}
+
 void Helper::SetHasRedirectO(bool _hasRedirectO, string output)
 {
     HasRedirectO = _hasRedirectO;
