@@ -6,7 +6,7 @@
 #include <typeinfo>
 #include "manager.h"
 #include "parser.h"
-#include "command.h"
+#include "cmd.h"
 #include "cmdtypes.h"
 #include "helper.h"
 

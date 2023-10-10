@@ -1,5 +1,5 @@
 #pragma once
-#include "command.h"
+#include "cmd.h"
 
 class Manager;
 
