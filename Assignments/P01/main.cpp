@@ -1,10 +1,21 @@
 #include <iostream>
-// #include <ncurses.h>
 #include "manager.h"
 #include "parser.h"
+#include "requests.h"
+
+// #include <ncurses.h>
+
+void ShellDriver();
+void RequestsDriver();
 
 int main() 
 {
+    RequestsDriver();
+    // ShellDriver();
+    return 0;
+}
+
+void ShellDriver() {
     bool shouldRun = true;
     Manager* manager = new Manager();
     manager->SetupManager();
@@ -14,5 +25,8 @@ int main()
         shouldRun = manager->WaitForCommand();
     }
     manager->SaveHistory();
-    return 0;
+}
+
+void RequestsDriver() {
+    CR::TestGet();
 }
