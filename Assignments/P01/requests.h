@@ -15,10 +15,14 @@ namespace CR {
         std::cout << "Text: " << r.text << '\n';
     }
 
-    // Local host requests might not work since on an Ubuntu distro 
-    // while the localhost server is running on the windows system.
-    void TestGet() {
-        cpr::Response r = cpr::Get(cpr::Url{"http://127.0.0.1:5000/utilities/pwd"});
+    // It works!!!
+    void TestPost() {
+        cpr::Response r = cpr::Post(
+                                cpr::Url{"http://127.0.0.1:5000/session"},
+                                cpr::Header{{"Content-Type", "application/json"}},
+                                cpr::Body{"{\r\n    \"username\": \"utest1\",\r\n    \"password\": \"password\"\r\n}"}
+                                // cpr::Payload{{"username", "utest1"}, {"password", "password"}}
+                            );
 
         std::cout << "Status Code: " << r.status_code << '\n';
         if(r.status_code == 0)

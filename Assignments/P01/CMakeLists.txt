@@ -41,3 +41,15 @@ FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
 FetchContent_MakeAvailable(cpr)
 
 target_link_libraries(shell PRIVATE cpr::cpr)
+
+# FetchContent_Declare(
+#     rapidjson
+#     GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
+#     GIT_TAG master  # Or use a specific tag or commit hash
+# )
+
+# Include the directories
+target_include_directories(shell PRIVATE
+    # ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/rapidjson
+)

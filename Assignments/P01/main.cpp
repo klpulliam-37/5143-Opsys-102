@@ -28,5 +28,5 @@ void ShellDriver() {
 }
 
 void RequestsDriver() {
-    CR::TestGet();
+    CR::TestPost();
 }
