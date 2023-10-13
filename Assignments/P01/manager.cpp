@@ -84,10 +84,10 @@ void Manager::SaveHistory()
 bool Manager::WaitForCommand()
 {
     string path = Helper::GetDir();
-    string termPath = Helper::FormatDir(path);
+    string shellCWD = cpprequests::GetShellPath();
     string cmds;
 
-    cout << termPath;
+    cout << shellCWD;
     getline(cin, cmds);
 
     if (cmds == "exit")
