@@ -2,14 +2,17 @@
 #include "manager.h"
 #include "parser.h"
 #include "requests.h"
+#include "jsonhandler.h"
 
 // #include <ncurses.h>
 
 void ShellDriver();
 void RequestsDriver();
+void RapidJsonDriver();
 
 int main() 
 {
+    // RapidJsonDriver();
     RequestsDriver();
     // ShellDriver();
     return 0;
@@ -28,5 +31,9 @@ void ShellDriver() {
 }
 
 void RequestsDriver() {
-    CR::TestPost();
+    cpprequests::StartSession();
+}
+
+void RapidJsonDriver() {
+    jsonhandler::jsonexample();
 }

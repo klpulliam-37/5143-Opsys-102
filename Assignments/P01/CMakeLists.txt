@@ -18,6 +18,7 @@ set(SOURCES
 )
 
 set(HEADERS
+    jsonhandler.h
     requests.h
     manager.h 
     parser.h 
