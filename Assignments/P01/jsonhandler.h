@@ -57,18 +57,28 @@ namespace jsonhandler {
         return parsedJson;
     }
 
-    std::string ExtractSessionID(Document session) {
-        const Value& session_id = session["session_id"];
-        // std::cout << "Session ID: " << session_id.GetString() << std::endl;
-
-        return session_id.GetString();
+    std::string ExtractValue(Document json, const char* key) {
+        const Value& value = json[key];
+        return value.GetString();
     }
 
-    std::string ExtractUsername(Document session) {
-        const Value& username = session["username"];
+    // std::string ExtractSessionID(Document session) {
+    //     const Value& session_id = session["session_id"];
+    //     // std::cout << "Session ID: " << session_id.GetString() << std::endl;
 
-        return username.GetString();
-    }
+    //     return session_id.GetString();
+    // }
+
+    // std::string ExtractUsername(Document session) {
+    //     const Value& username = session["username"];
+
+    //     return username.GetString();
+    // }
+
+    // std::string ExtractCWD(Document rBody) {
+    //     const Value& cwd = rBody["cwd"];
+    //     return cwd.GetString();
+    // }
 
     void ParseTest() {
         const char* jsonStr = R"(

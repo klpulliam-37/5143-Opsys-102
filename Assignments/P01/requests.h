@@ -5,6 +5,9 @@
 #include "jsonhandler.h"
 
 namespace cpprequests {
+    std::string url = "http://127.0.0.1:5000";
+    cpr::Header header = cpr::Header{{"Content-Type", "application/json"}};
+
     std::string session_id = "";
     std::string username = "";
 
@@ -24,40 +27,14 @@ namespace cpprequests {
         return username;
     }
 
-    // cpr::Response CreateSession(std::string username, std::string password) {
-    //     cpr::Response r = cpr::Post(
-    //                             cpr::Url{"http://127.0.0.1:5000/session"},
-    //                             cpr::Header{{"Content-Type", "application/json"}},
-    //                             cpr::Body{"{\r\n    \"username\": \"" + username + "\",\r\n    \"password\": \"" + password + "\"\r\n}"}
-    //                         );
-        
-    //     return r;
-    // }
-
-    // void ValidateCredentials(std::string username, std::string password, cpr::Response r) {
-    //     while (r.status_code == 401) {
-    //         std::cerr << "Error: Invalid Credentials" << std::endl;
-
-    //         std::string username = "", password = "";
-
-    //         std::cout << "Please enter your username: ";
-    //         std::cin >> username;
-
-    //         std::cout << "Please enter your password: ";
-    //         std::cin >> password;
-
-    //         CreateSession(username, password);
-    //     }
-    // }
-
     bool StartSession(std::string username, std::string password) {
         cpr::Response r = cpr::Post(
-                                cpr::Url{"http://127.0.0.1:5000/session"},
-                                cpr::Header{{"Content-Type", "application/json"}},
+                                cpr::Url{url + "/session"},
+                                header,
                                 cpr::Body{"{\r\n    \"username\": \"" + username + "\",\r\n    \"password\": \"" + password + "\"\r\n}"}
                             );
 
-        std::cout << "Status Code: " << r.status_code << '\n';
+        // std::cout << "Status Code: " << r.status_code << '\n';
         if(r.status_code == 0)
         {
             std::cerr << r.error.message << std::endl;
@@ -68,17 +45,27 @@ namespace cpprequests {
             return false;
         }
         else if (r.status_code >= 400) {
-            std::cerr << "Error [" << r.status_code << "] making request" << std::endl;
+            // std::cerr << "Error [" << r.status_code << "] making request" << std::endl;
             return false;
         }
 
-        std::cout << "Text: " << r.text << '\n';
+        // std::cout << "Text: " << r.text << '\n';
         const char* text = r.text.c_str();
 
-        SetSessionID(jsonhandler::ExtractSessionID(jsonhandler::StringToJson(text)));
-        SetUsername(jsonhandler::ExtractUsername(jsonhandler::StringToJson(text)));
+        SetSessionID(jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "session_id"));
+        SetUsername(jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "username"));
 
         return true;
+    }
+
+    std::string GetCWD() {
+        cpr::Response r = cpr::Get(cpr::Url{url + "/pwd"});
+
+        const char* text = r.text.c_str();
+
+        std::string cwd = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "cwd");
+
+        return cwd;
     }
 }
 

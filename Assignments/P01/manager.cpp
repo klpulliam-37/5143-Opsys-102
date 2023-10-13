@@ -48,7 +48,6 @@ void Manager::UserLogin() {
     }
 }
 
-// Need to handle saving history to file when program closes
 void Manager::LoadHistory()
 {
     // Load file line by line into history vector

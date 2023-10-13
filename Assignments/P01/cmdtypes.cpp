@@ -10,6 +10,7 @@
 #include "manager.h"
 #include "parser.h"
 #include "cmdtypes.h"
+#include "requests.h"
 #include "helper.h"
 
 using namespace std;
@@ -121,7 +122,7 @@ string PWD::Execute(string input = "")
 {
     Command::Execute(input);
 
-    string pwd = Helper::GetDir();
+    string pwd = cpprequests::GetCWD();
     if (!Helper::GetHasRedirectO())
     {
         cout << pwd << '\n';
