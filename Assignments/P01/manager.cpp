@@ -9,6 +9,7 @@
 #include "cmd.h"
 #include "cmdtypes.h"
 #include "helper.h"
+#include "requests.h"
 
 using namespace std;
 
@@ -25,9 +26,22 @@ Manager::~Manager()
 
 void Manager::SetupManager()
 {
+    UserLogin();
     LoadHistory();
 
     parser->SetManager(this);
+}
+
+void Manager::UserLogin() {
+    string username = "", password = "";
+
+    cout << "Please enter your username: ";
+    cin >> username;
+
+    cout << "Please enter your password: ";
+    cin >> password;
+
+    cpprequests::StartSession(username, password);
 }
 
 // Need to handle saving history to file when program closes

@@ -28,6 +28,7 @@ private:
 
 public:
     void SetupManager();
+    void UserLogin();
     void LoadHistory();
     void SaveHistory();
     bool WaitForCommand();
