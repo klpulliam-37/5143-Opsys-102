@@ -141,7 +141,7 @@ string History::Execute(string input = "")
     if (!Helper::GetHasRedirectO())
     {
         string command = "";
-        while(ss >> command)
+        while(getline(ss, command))
         {
             cout << historyIndex++ << " " << command << "\n";
         }

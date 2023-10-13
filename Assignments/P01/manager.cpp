@@ -33,15 +33,19 @@ void Manager::SetupManager()
 }
 
 void Manager::UserLogin() {
-    string username = "", password = "";
+    bool credentialsValid = false;
+    while (!credentialsValid)
+    {
+        string username = "", password = "";
 
-    cout << "Please enter your username: ";
-    cin >> username;
+        cout << "Please enter your username: ";
+        getline(cin, username);
 
-    cout << "Please enter your password: ";
-    cin >> password;
+        cout << "Please enter your password: ";
+        getline(cin, password);
 
-    cpprequests::StartSession(username, password);
+        credentialsValid = cpprequests::StartSession(username, password);
+    }
 }
 
 // Need to handle saving history to file when program closes
