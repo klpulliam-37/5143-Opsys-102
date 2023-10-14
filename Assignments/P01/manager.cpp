@@ -69,7 +69,8 @@ void Manager::LoadHistory()
 
 void Manager::SaveHistory()
 {
-    ofstream historyfile(".history", ios::app);
+    // To append, pass ios::app as well
+    ofstream historyfile(".history");
 
     if (historyfile.is_open())
     {
@@ -116,6 +117,8 @@ void Manager::ExecuteCommands()
     {
         input = Commands.at(i)->Execute(input);
     }
+
+    // cout << input;
 
     if (Helper::GetHasRedirectO())
     {
