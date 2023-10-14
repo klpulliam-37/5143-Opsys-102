@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include <cpr/cpr.h>
 #include "requests.h"
 #include "jsonhandler.h"
@@ -79,6 +80,21 @@ namespace cpprequests {
         colors::RESET() + ":" + 
         colors::LIGHT_BLUE() + "~" + GetCWD() + 
         colors::RESET() + "$ ";
+    }
+
+    std::vector<std::pair<std::string, std::string>> GetLS() {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/utilities/ls"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::vector<std::pair<std::string, std::string>> files = jsonhandler::ParseList(jsonhandler::StringToJson(text), "file_name");
+        return files;
     }
 }
 

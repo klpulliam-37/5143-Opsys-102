@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include "jsonhandler.h"
 #include "include/rapidjson/document.h"
 #include "include/rapidjson/writer.h"
@@ -59,6 +60,35 @@ std::string jsonhandler::JsonToString() {
 std::string jsonhandler::ExtractValue(Document json, const char* key) {
     const Value& value = json[key];
     return value.GetString();
+}
+
+std::vector<std::pair<std::string, std::string>> jsonhandler::ParseList(Document list, const char* key) {
+    std::vector<std::pair<std::string, std::string>> files;
+
+    // Ensure the parsed JSON is an array
+    if (!list.IsArray()) {
+        std::cerr << "Invalid JSON format. Expected an array." << std::endl;
+        return files;
+    }    
+
+    for (SizeType i = 0; i < list.Size(); ++i) {
+        const Value& object = list[i];
+
+        // Access the properties of each object
+        if (object.IsObject()) {
+            const Value& name = object["file_name"];
+            const Value& type = object["file_type"];
+
+            if (name.IsString() && type.IsString()) {
+                // std::cout << "Object " << i + 1 << ": Name = " << name.GetString() << ", Type = " << type.GetString() << std::endl;
+                files.push_back(std::make_pair(name.GetString(), type.GetString()));
+            } else {
+                std::cerr << "Invalid object format at index " << i << std::endl;
+            }
+        }
+    }
+
+    return files;
 }
 
 void jsonhandler::ParseTest() {
