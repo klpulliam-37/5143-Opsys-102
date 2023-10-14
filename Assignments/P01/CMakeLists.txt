@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Add your source files and header files
 set(SOURCES
     main.cpp
+    colors.cpp
     jsonhandler.cpp
     requests.cpp
     manager.cpp 
@@ -20,6 +21,7 @@ set(SOURCES
 )
 
 set(HEADERS
+    colors.h
     jsonhandler.h
     requests.h
     manager.h 

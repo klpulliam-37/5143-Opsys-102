@@ -4,6 +4,7 @@
 #include <cpr/cpr.h>
 #include "requests.h"
 #include "jsonhandler.h"
+#include "colors.h"
 
 namespace cpprequests {
     std::string url = "http://127.0.0.1:5000";
@@ -74,7 +75,10 @@ namespace cpprequests {
     }
 
     std::string GetShellPath() {
-        return GetUsername() + ":~" + GetCWD();
+        return colors::GREEN() + GetUsername() + 
+        colors::RESET() + ":" + 
+        colors::LIGHT_BLUE() + "~" + GetCWD() + 
+        colors::RESET() + "$ ";
     }
 }
 
