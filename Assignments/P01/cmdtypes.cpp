@@ -13,6 +13,7 @@
 #include "cmdtypes.h"
 #include "requests.h"
 #include "helper.h"
+#include "colors.h"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -25,13 +26,17 @@ string LS::Execute(string input = "")
 
     vector<pair<string, string>> files = cpprequests::GetLS();
 
+    string filename = "";
     // Iterate over the vector using a range-based for loop
     for (const pair<string, string>& file : files) {
-        cout << file.first << endl;
-        fileNames += file.first + '\n';
+        if (file.second == "directory") {
+            filename = colors::BLUE() + file.first + colors::RESET();
+        }else {
+            filename = file.first;
+        }
+        cout << filename << endl;
+        fileNames += filename + '\n';
     }
-
-
 
     return fileNames;
 
@@ -111,6 +116,30 @@ string PWD::Execute(string input = "")
         cout << pwd << '\n';
     }
     return pwd;
+}
+
+string CD::Execute(string input = "")
+{
+    Command::Execute(input);
+    
+    string newpath = "";
+
+    string path = "";
+
+    stringstream ss(GetArguments());
+    getline(ss, path);
+
+    // Remove whitespace to ensure correct path
+    for (size_t i = 0; i < path.length(); ++i) {
+        if (isspace(path[i])) {
+            path.erase(i, 1);
+            --i;  // Adjust index after erasing
+        }
+    }
+
+    // cout << "Path: '" << path << "'" << endl;
+    newpath = cpprequests::ChangeDirectory(path);
+    return newpath;
 }
 
 string History::Execute(string input = "")

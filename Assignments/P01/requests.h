@@ -12,5 +12,6 @@ namespace cpprequests {
     std::string GetCWD();
     std::string GetShellPath();
     std::vector<std::pair<std::string, std::string>> GetLS();
+    std::string ChangeDirectory(std::string path);
 }
 

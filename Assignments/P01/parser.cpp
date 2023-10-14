@@ -87,11 +87,11 @@ void Parser::CreateCommand(string cmdStr)
     // {
 
     // }
-    // // cd
-    // else if (cmd == "cd")
-    // {
-        
-    // }
+    // cd
+    else if (cmd == "cd")
+    {
+        command = new CD(cmd);
+    }
     // // pwd
     else if (cmd == "pwd")
     {

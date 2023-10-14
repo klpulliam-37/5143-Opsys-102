@@ -96,5 +96,21 @@ namespace cpprequests {
         std::vector<std::pair<std::string, std::string>> files = jsonhandler::ParseList(jsonhandler::StringToJson(text), "file_name");
         return files;
     }
+
+    std::string ChangeDirectory(std::string path) {
+        cpr::Response r = cpr::Post(
+            cpr::Url{url + "/utilities/cd"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::string newpath = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "new_path");
+        return newpath;
+        // std:: cout << "New Path: " << newpath << std::endl;
+    }
 }
 

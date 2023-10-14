@@ -27,6 +27,14 @@ private:
 
 };
 
+class CD: public Command
+{
+public:
+    CD(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class History: public Command
 {
 public:
