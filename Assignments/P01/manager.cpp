@@ -6,9 +6,10 @@
 #include <typeinfo>
 #include "manager.h"
 #include "parser.h"
-#include "command.h"
+#include "cmd.h"
 #include "cmdtypes.h"
 #include "helper.h"
+#include "requests.h"
 
 using namespace std;
 
@@ -25,12 +26,28 @@ Manager::~Manager()
 
 void Manager::SetupManager()
 {
+    UserLogin();
     LoadHistory();
 
     parser->SetManager(this);
 }
 
-// Need to handle saving history to file when program closes
+void Manager::UserLogin() {
+    bool credentialsValid = false;
+    while (!credentialsValid)
+    {
+        string username = "", password = "";
+
+        cout << "Please enter your username: ";
+        getline(cin, username);
+
+        cout << "Please enter your password: ";
+        getline(cin, password);
+
+        credentialsValid = cpprequests::StartSession(username, password);
+    }
+}
+
 void Manager::LoadHistory()
 {
     // Load file line by line into history vector
@@ -67,10 +84,10 @@ void Manager::SaveHistory()
 bool Manager::WaitForCommand()
 {
     string path = Helper::GetDir();
-    string termPath = Helper::FormatDir(path);
+    string shellCWD = cpprequests::GetShellPath();
     string cmds;
 
-    cout << termPath;
+    cout << shellCWD;
     getline(cin, cmds);
 
     if (cmds == "exit")

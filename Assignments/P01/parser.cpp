@@ -3,7 +3,7 @@
 #include <sstream>
 #include "parser.h"
 #include "manager.h"
-#include "command.h"
+#include "cmd.h"
 #include "cmdtypes.h"
 #include "helper.h"
 

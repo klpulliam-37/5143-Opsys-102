@@ -1,42 +1,40 @@
 #include <iostream>
-#include <ncurses.h>
 #include "manager.h"
 #include "parser.h"
+// #include "requests.h"
+// #include "jsonhandler.h"
 
-// class Base
-// {
-// public:
-//     virtual void print()
-//     {
-//         std::cout << "Base\n";
-//     }
-// };
+// #include <ncurses.h>
 
-// class Derived : public Base
-// {
-// public:
-//     void print() override
-//     {
-//         std::cout << "Derived\n";
-//     }
-// };
+void ShellDriver();
+void RequestsDriver();
+void RapidJsonDriver();
 
 int main() 
 {
-    // Derived d;
-    // Base* b = &d;
-    // b->print();
+    // RapidJsonDriver();
+    // RequestsDriver();
+    ShellDriver();
+    return 0;
+}
 
+void ShellDriver() {
     bool shouldRun = true;
     Manager* manager = new Manager();
     manager->SetupManager();
-
-    // manager->TestDeriv();
 
     while(shouldRun)
     {
         shouldRun = manager->WaitForCommand();
     }
     manager->SaveHistory();
-    return 0;
+}
+
+void RequestsDriver() {
+    // cpprequests::StartSession();
+}
+
+void RapidJsonDriver() {
+    // jsonhandler::jsonexample();
+    // jsonhandler::ParseTest();
 }
