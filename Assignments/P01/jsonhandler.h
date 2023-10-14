@@ -12,9 +12,8 @@ namespace jsonhandler {
     Document StringToJson(const char* jsonStr);
     std::string JsonToString();
     std::string ExtractValue(Document json, const char* key);
-    // std::string ExtractSessionID(Document session);
-    // std::string ExtractUsername(Document session);
-    // std::string ExtractCWD(Document rBody);
+    std::vector<std::pair<std::string, std::string>> ParseList(Document json, const char* key);
+    
     void ParseTest();
     void jsonexample();
 }

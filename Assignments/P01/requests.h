@@ -11,5 +11,6 @@ namespace cpprequests {
     bool StartSession(std::string username, std::string password);
     std::string GetCWD();
     std::string GetShellPath();
+    std::vector<std::pair<std::string, std::string>> GetLS();
 }
 
