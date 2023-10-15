@@ -20,4 +20,5 @@ public:
     void static SetHasRedirectO(bool _hasRedirectO, std::string output);
     bool static GetHasRedirectO();
     std::string static GetOutfile();
+    std::string static RemoveWhitespace(std::string _str);
 };

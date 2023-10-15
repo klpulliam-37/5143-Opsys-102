@@ -35,6 +35,14 @@ public:
     string Execute(string input) override;
 };
 
+class MkDir: public Command
+{
+public:
+    MkDir(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class History: public Command
 {
 public:

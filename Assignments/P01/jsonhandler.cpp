@@ -6,6 +6,7 @@
 #include "include/rapidjson/document.h"
 #include "include/rapidjson/writer.h"
 #include "include/rapidjson/stringbuffer.h"
+#include "colors.h"
 
 using namespace rapidjson;
 
@@ -58,8 +59,20 @@ std::string jsonhandler::JsonToString() {
 }
 
 std::string jsonhandler::ExtractValue(Document json, const char* key) {
-    const Value& value = json[key];
-    return value.GetString();
+    // const Value& value = json[key];
+    Value::ConstMemberIterator itr = json.FindMember(key);
+    if (itr == json.MemberEnd()) {
+        return colors::RED() + "Error: No such key in response." + colors::RESET();
+    }
+    
+    if (itr->value.IsBool()) {
+        if (itr->value.GetBool()) {
+            return "true";
+        }
+        return "false";
+    }
+
+    return itr->value.GetString();
 }
 
 std::vector<std::pair<std::string, std::string>> jsonhandler::ParseList(Document list, const char* key) {

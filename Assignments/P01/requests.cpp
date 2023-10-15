@@ -43,7 +43,7 @@ namespace cpprequests {
             return false;
         }
         else if (r.status_code == 401) {
-            std::cerr << "Error: Invalid Credentials" << std::endl;
+            std::cerr << colors::RED() << "Error: Invalid Credentials" << colors::RESET() << std::endl;
             return false;
         }
         else if (r.status_code >= 400) {
@@ -109,8 +109,34 @@ namespace cpprequests {
         // std::cout << text << std::endl;
 
         std::string newpath = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "new_path");
+
         return newpath;
-        // std:: cout << "New Path: " << newpath << std::endl;
+    }
+
+    std::string MakeDirectory(std::string dirName, std::string path) {
+        std::string body = "";
+
+        if (path == "") {
+            // body = "{\r\n    \"file_name\": \"" + dirName + "\",\r\n    \"file_type\": \"directory\",\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"contents\": \"\"\r\n}";
+            body = "{\r\n    \"file_name\": \"" + dirName + "\",\r\n    \"file_type\": \"directory\",\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}";
+        }else{
+            // body = "{\r\n    \"file_name\": \"" + dirName + "\",\r\n    \"file_type\": \"directory\",\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"contents\": \"\",\r\n    \"path\": \"" + path + "\"\r\n}";
+            body = "{\r\n    \"file_name\": \"" + dirName + "\",\r\n    \"file_type\": \"directory\",\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}";
+        }
+
+        cpr::Response r = cpr::Post(
+            cpr::Url{url + "/path"},
+            header,
+            cpr::Body{body}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
+
+        return success;
     }
 }
 

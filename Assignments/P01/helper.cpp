@@ -81,3 +81,15 @@ string Helper::GetOutfile()
 {
     return Outfile;
 }
+
+string Helper::RemoveWhitespace(string _str) {
+    string str = _str;
+    // Remove whitespace to ensure correct path
+    for (size_t i = 0; i < str.length(); ++i) {
+        if (isspace(str[i])) {
+            str.erase(i, 1);
+            --i;  // Adjust index after erasing
+        }
+    }
+    return str;
+}
