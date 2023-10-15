@@ -171,9 +171,25 @@ string CAT::Execute(string input = "")
 {
     Command::Execute(input);
 
-    cpprequests::CAT();
+    string output = "";
+    vector<map<string, string>> files = cpprequests::CAT();
+    stringstream ss(GetArguments());
+    string fileName;
 
-    return "";
+    while (getline(ss, fileName, ' ')) {
+        fileName = Helper::RemoveWhitespace(fileName);
+        
+        // Find the files specified in the cmd arguments and ensure it is a file.
+        // If the file doesn't exist, then ignore it.
+        for (int i = 0; i < files.size(); i++) {
+            if (files[i]["file_name"] == fileName) {
+                cout << files[i]["contents"];
+                output += files[i]["contents"];
+            }
+        }
+    }
+
+    return output;
 }
 
 string History::Execute(string input = "")

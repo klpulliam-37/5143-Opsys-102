@@ -139,7 +139,7 @@ namespace cpprequests {
         return success;
     }
 
-    std::string CAT() {
+    std::vector<std::map<std::string, std::string>> CAT() {
         cpr::Response r = cpr::Get(
             cpr::Url{url + "/utilities/ls"},
             header,
@@ -148,7 +148,7 @@ namespace cpprequests {
 
         const char* text = r.text.c_str();
 
-        std::cout << text << std::endl;
+        // std::cout << text << std::endl;
 
         std::vector<const char*> keys;
         keys.push_back("file_name");
@@ -156,8 +156,9 @@ namespace cpprequests {
         keys.push_back("contents");
 
         std::vector<std::map<std::string, std::string>> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
-        jsonhandler::PrintObjs(filesObj);
-        return "";
+        // jsonhandler::PrintObjs(filesObj);
+
+        return filesObj;
     }
 }
 
