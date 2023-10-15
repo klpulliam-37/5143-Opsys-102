@@ -79,7 +79,7 @@ namespace cpprequests {
         return colors::GREEN() + GetUsername() + 
         colors::RESET() + ":" + 
         colors::LIGHT_BLUE() + "~" + GetCWD() + 
-        colors::RESET() + "$ ";
+        colors::RESET() + "% ";
     }
 
     std::vector<std::pair<std::string, std::string>> GetLS() {
@@ -137,6 +137,27 @@ namespace cpprequests {
         std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
 
         return success;
+    }
+
+    std::string CAT() {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/utilities/ls"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        std::cout << text << std::endl;
+
+        std::vector<const char*> keys;
+        keys.push_back("file_name");
+        keys.push_back("file_type");
+        keys.push_back("contents");
+
+        std::vector<std::map<std::string, std::string>> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
+        jsonhandler::PrintObjs(filesObj);
+        return "";
     }
 }
 

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <map>
 #include <algorithm>
 #include <filesystem>
 #include <sys/stat.h>
@@ -164,6 +165,15 @@ string MkDir::Execute(string input = "")
     }
     
     return success;
+}
+
+string CAT::Execute(string input = "")
+{
+    Command::Execute(input);
+
+    cpprequests::CAT();
+
+    return "";
 }
 
 string History::Execute(string input = "")

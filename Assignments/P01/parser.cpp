@@ -117,11 +117,11 @@ void Parser::CreateCommand(string cmdStr)
     // {
         
     // }
-    // // cat
-    // else if (cmd == "cat")
-    // {
-        
-    // }
+    // cat
+    else if (cmd == "cat")
+    {
+        command = new CAT(cmd);
+    }
     // // less
     // else if (cmd == "less")
     // {
