@@ -14,5 +14,6 @@ namespace cpprequests {
     std::vector<std::pair<std::string, std::string>> GetLS();
     std::string ChangeDirectory(std::string path);
     std::string MakeDirectory(std::string dirName, std::string path = "");
+    std::string CAT();
 }
 

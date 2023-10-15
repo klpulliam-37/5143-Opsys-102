@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <vector>
+// #include <vector>
+// #include <map>
 #include "jsonhandler.h"
 #include "include/rapidjson/document.h"
 #include "include/rapidjson/writer.h"
@@ -102,6 +103,52 @@ std::vector<std::pair<std::string, std::string>> jsonhandler::ParseList(Document
     }
 
     return files;
+}
+
+std::vector<std::map<std::string, std::string>> jsonhandler::ParseObjs(Document json, std::vector<const char*> keys) {
+    std::vector<std::map<std::string, std::string>> files;
+    
+    // Ensure the parsed JSON is an array
+    if (!json.IsArray()) {
+        std::cerr << "Invalid JSON format. Expected an array." << std::endl;
+        return files;
+    }    
+
+    for (SizeType o = 0; o < json.Size(); o++) {
+        std::map<std::string, std::string> file;
+        const Value& object = json[o];
+
+        // Access the properties of each object
+        if (object.IsObject()) {
+            for (int k = 0; k < keys.size(); k++) {
+                const char* key = keys[k];
+                const Value& value = object[key];
+                std::string strValue = "null";
+
+                if (value.IsString()) {
+                    strValue = value.GetString();
+                }
+                else if (value.IsNumber()) {
+                    strValue = std::to_string(value.GetInt());
+                }
+
+                file.insert(std::pair<std::string, std::string>(key, strValue));                
+            }
+            files.push_back(file);
+        }
+    }
+
+    return files;
+}
+
+void jsonhandler::PrintObjs(std::vector<std::map<std::string, std::string>> objs) {
+    for (int m = 0; m < objs.size(); m++) {
+        std::map<std::string, std::string>::iterator itr;
+        for (itr = objs[m].begin(); itr != objs[m].end(); ++itr) {
+            std::cout << "Key: " << itr->first << "Value: " << itr->second << '\n';
+        }
+        std::cout << std::endl;
+    }
 }
 
 void jsonhandler::ParseTest() {

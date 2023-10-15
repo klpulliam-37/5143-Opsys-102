@@ -43,6 +43,14 @@ public:
     string Execute(string input) override;
 };
 
+class CAT: public Command
+{
+public:
+    CAT(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class History: public Command
 {
 public:

@@ -4,7 +4,7 @@
 //       to the Virtual-File-System
 // TODO: Implement optional path parameter for ls command
 // TODO: Fix !x command, causes aborted error and not sure why
-// TODO: cd command still works on files, need to fix
+// TODO: cd command still works on files, need to fix it so it doesn't
 // TODO: not passing contents when making a directory results in a failed request.
 //       contents should not be required. Handled the error with path["contents"] being null,
 //       need to push now.
