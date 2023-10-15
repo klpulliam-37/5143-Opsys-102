@@ -139,7 +139,31 @@ string CD::Execute(string input = "")
 
     // cout << "Path: '" << path << "'" << endl;
     newpath = cpprequests::ChangeDirectory(path);
+
+    if (newpath == "Directory does not exist." && !Helper::GetHasRedirectO()) {
+        cout << newpath << endl;
+    }
+
     return newpath;
+}
+
+string MkDir::Execute(string input = "")
+{
+    Command::Execute(input);
+
+    string dirName = "", path = "", success = "";
+
+    stringstream ss(GetArguments());
+    getline(ss, dirName);
+    dirName = Helper::RemoveWhitespace(dirName);
+    if (!ss.eof()) {
+        getline(ss, path);
+        success = cpprequests::MakeDirectory(dirName, path);
+    }else{
+        success = cpprequests::MakeDirectory(dirName);
+    }
+    
+    return success;
 }
 
 string History::Execute(string input = "")

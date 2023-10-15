@@ -82,11 +82,11 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new LS(cmd);
     }
-    // // mkdir
-    // else if (cmd == "mkdir")
-    // {
-
-    // }
+    // mkdir
+    else if (cmd == "mkdir")
+    {
+        command = new MkDir(cmd);
+    }
     // cd
     else if (cmd == "cd")
     {

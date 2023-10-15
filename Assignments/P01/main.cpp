@@ -2,6 +2,12 @@
 // TODO: Create the append functionality when redirecting to a file, AKA >>
 // TODO: Implement the rest of the commands now that the program is connected 
 //       to the Virtual-File-System
+// TODO: Implement optional path parameter for ls command
+// TODO: Fix !x command, causes aborted error and not sure why
+// TODO: cd command still works on files, need to fix
+// TODO: not passing contents when making a directory results in a failed request.
+//       contents should not be required. Handled the error with path["contents"] being null,
+//       need to push now.
 
 #include <iostream>
 #include "manager.h"
