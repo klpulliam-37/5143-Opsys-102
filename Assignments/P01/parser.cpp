@@ -152,7 +152,7 @@ void Parser::CreateCommand(string cmdStr)
     }
     else
     {
-        command = new Command("");
+        command = new Error(cmd);
     }
 
     // split command into command object

@@ -2,12 +2,15 @@
 // TODO: Create the append functionality when redirecting to a file, AKA >>
 // TODO: Implement the rest of the commands now that the program is connected 
 //       to the Virtual-File-System
+//       - head, less, tail, rmdir, rm, mv, cp, grep, wc, chmod, sort, who, append, input redirect, paging
 // TODO: Implement optional path parameter for ls command
 // TODO: Fix !x command, causes aborted error and not sure why
 // TODO: cd command still works on files, need to fix it so it doesn't
 // TODO: not passing contents when making a directory results in a failed request.
 //       contents should not be required. Handled the error with path["contents"] being null,
 //       need to push now.
+// TODO: Handle bad commands and bad flags
+// TODO: Implement --help flag for each command and a general help command
 
 #include <iostream>
 #include "manager.h"

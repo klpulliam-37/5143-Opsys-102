@@ -69,3 +69,11 @@ public:
 
     string Execute(string input) override;
 };
+
+class Error: public Command
+{
+public: 
+    Error(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};

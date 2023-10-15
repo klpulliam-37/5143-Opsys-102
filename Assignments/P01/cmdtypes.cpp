@@ -232,3 +232,17 @@ string HistoryIndex::Execute(string input = "")
 
     // use managerRef to reparse command
 }
+
+string Error::Execute(string input = "") {
+    Command::Execute(input);
+
+    string error = colors::RED() + "Error: " + GetCmd() + " command not found." + colors::RESET();
+
+    // Print name
+
+    if (!Helper::GetHasRedirectO()) {
+        cout << error << endl;
+    }
+
+    return error;
+}
