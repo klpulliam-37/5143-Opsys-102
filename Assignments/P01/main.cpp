@@ -7,6 +7,7 @@
 // TODO: Handle bad flags
 // TODO: Implement --help flag for each command and a general help command
 // TODO: Handle user login timeout by checking if r.status_code is == 409
+// TODO: Handle up and down arrow keys to access commands history
 
 #include <iostream>
 #include "manager.h"

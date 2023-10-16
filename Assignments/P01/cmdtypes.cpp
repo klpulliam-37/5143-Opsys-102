@@ -204,7 +204,7 @@ string Grep::Execute(string input = "") {
 
     // Get the keyword(first arg), and check for it in the file(second arg)
     string keyword = "", fileName = "", contents = "", lines = "", line = "";
-    cout << "Args: " << GetArguments() << endl;
+    // cout << "Args: " << GetArguments() << endl;
     stringstream ssArgs(GetArguments());
     getline(ssArgs, keyword, ' ');
     getline(ssArgs, fileName);
@@ -215,7 +215,12 @@ string Grep::Execute(string input = "") {
     // Get a files contents, split on newlines, and check for the keyword
     // Also highlight the word in the string
     // cout << "Before Grep\n";
-    contents = cpprequests::Grep(keyword, fileName);
+    if (input != "") {
+        contents = input;
+    } else {
+        contents = cpprequests::Grep(keyword, fileName);
+    }
+    
     // cout << "After Grep\n";
     stringstream ss(contents);
 
