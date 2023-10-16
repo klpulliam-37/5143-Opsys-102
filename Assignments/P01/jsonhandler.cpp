@@ -126,6 +126,7 @@ std::vector<std::map<std::string, std::string>> jsonhandler::ParseObjs(Document 
                 std::string strValue = "null";
 
                 if (value.IsString()) {
+                    std::cout << "Value: " << value.GetString() << "\tstrValue: " << strValue << std::endl;
                     strValue = value.GetString();
                 }
                 else if (value.IsNumber()) {

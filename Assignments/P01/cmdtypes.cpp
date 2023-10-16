@@ -35,7 +35,9 @@ string LS::Execute(string input = "")
         }else {
             filename = file.first;
         }
-        cout << filename << endl;
+        if (Helper::GetHasRedirectO() || GetPrints()) {
+            cout << filename << endl;
+        }
         fileNames += filename + '\n';
     }
 
@@ -112,7 +114,7 @@ string PWD::Execute(string input = "")
     Command::Execute(input);
 
     string pwd = cpprequests::GetCWD();
-    if (!Helper::GetHasRedirectO())
+    if (Helper::GetHasRedirectO() || GetPrints())
     {
         cout << pwd << '\n';
     }
@@ -141,7 +143,7 @@ string CD::Execute(string input = "")
     // cout << "Path: '" << path << "'" << endl;
     newpath = cpprequests::ChangeDirectory(path);
 
-    if (newpath == "Directory does not exist." && !Helper::GetHasRedirectO()) {
+    if (Helper::GetHasRedirectO() || GetPrints()) {
         cout << newpath << endl;
     }
 
@@ -183,7 +185,9 @@ string CAT::Execute(string input = "")
         // If the file doesn't exist, then ignore it.
         for (int i = 0; i < files.size(); i++) {
             if (files[i]["file_name"] == fileName) {
-                cout << files[i]["contents"];
+                if (Helper::GetHasRedirectO() || GetPrints()) {
+                    cout << files[i]["contents"];
+                }
                 output += files[i]["contents"];
             }
         }
@@ -206,7 +210,9 @@ string History::Execute(string input = "")
         string command = "";
         while(getline(ss, command))
         {
-            cout << historyIndex++ << " " << command << "\n";
+            if (Helper::GetHasRedirectO() || GetPrints()) {
+                cout << historyIndex++ << " " << command << "\n";
+            }
         }
     }
     return history;
@@ -238,9 +244,7 @@ string Error::Execute(string input = "") {
 
     string error = colors::RED() + "Error: " + GetCmd() + " command not found." + colors::RESET();
 
-    // Print name
-
-    if (!Helper::GetHasRedirectO()) {
+    if (Helper::GetHasRedirectO() || GetPrints()) {
         cout << error << endl;
     }
 

@@ -155,7 +155,7 @@ namespace cpprequests {
         keys.push_back("file_type");
         keys.push_back("contents");
 
-        std::vector<std::map<std::string, std::string>> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
+        std::vector<std::map<std::string, std::string >> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
         // jsonhandler::PrintObjs(filesObj);
 
         return filesObj;

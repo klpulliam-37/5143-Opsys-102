@@ -58,6 +58,10 @@ string Command::GetArguments()
     return argumentsStr;
 }
 
+bool Command::GetPrints() {
+    return bPrints;
+}
+
 void Command::SetCmd(string cmd) 
 {
     name = cmd;
@@ -76,6 +80,10 @@ void Command::SetRedirects(string _redirects)
 void Command::SetArguments(string _arguments)
 {
     arguments.push_back(_arguments);
+}
+
+void Command::SetPrint(bool _bPrints) {
+    bPrints = _bPrints;
 }
 
 string Command::PrintCommand()
