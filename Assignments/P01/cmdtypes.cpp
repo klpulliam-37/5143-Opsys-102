@@ -185,7 +185,10 @@ string CAT::Execute(string input = "")
         // If the file doesn't exist, then ignore it.
         for (int i = 0; i < files.size(); i++) {
             if (files[i]["file_name"] == fileName) {
-                if (Helper::GetHasRedirectO() || GetPrints()) {
+                if (files[i]["file_type"] == "directory") {
+                    cout << colors::RED() << "cat: " << fileName << ": Is a directory" << colors::RESET() << endl;
+                }
+                else if ((Helper::GetHasRedirectO() || GetPrints())) {
                     cout << files[i]["contents"] + '\n';
                 }
                 output += files[i]["contents"];
