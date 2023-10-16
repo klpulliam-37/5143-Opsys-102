@@ -51,6 +51,14 @@ public:
     string Execute(string input) override;
 };
 
+class Grep: public Command
+{
+public:
+    Grep(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class History: public Command
 {
 public:
@@ -66,6 +74,14 @@ private:
 
 public:
     HistoryIndex(string cmd, Manager* _managerRef) : Command(cmd) {managerRef = _managerRef;};
+
+    string Execute(string input) override;
+};
+
+class Error: public Command
+{
+public: 
+    Error(string cmd) : Command(cmd) {};
 
     string Execute(string input) override;
 };

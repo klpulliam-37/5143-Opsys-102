@@ -1,13 +1,13 @@
-// TODO: Commands being piped should also not display information to the shell
-// TODO: Create the append functionality when redirecting to a file, AKA >>
+// TODO: Create the append functionality when redirecting to a file, AKA '>>' token
 // TODO: Implement the rest of the commands now that the program is connected 
 //       to the Virtual-File-System
+//       - head, less, tail, rmdir, rm, mv, cp, grep, wc, chmod, sort, who, append, input redirect, paging
 // TODO: Implement optional path parameter for ls command
 // TODO: Fix !x command, causes aborted error and not sure why
-// TODO: cd command still works on files, need to fix it so it doesn't
-// TODO: not passing contents when making a directory results in a failed request.
-//       contents should not be required. Handled the error with path["contents"] being null,
-//       need to push now.
+// TODO: Handle bad flags
+// TODO: Implement --help flag for each command and a general help command
+// TODO: Handle user login timeout by checking if r.status_code is == 409
+// TODO: Handle up and down arrow keys to access commands history
 
 #include <iostream>
 #include "manager.h"

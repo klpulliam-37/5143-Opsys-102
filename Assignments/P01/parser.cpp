@@ -132,11 +132,11 @@ void Parser::CreateCommand(string cmdStr)
     // {
         
     // }
-    // // grep
-    // else if (cmd == "grep")
-    // {
-        
-    // }
+    // grep
+    else if (cmd == "grep")
+    {
+        command = new Grep(cmd);
+    }
     // // wc
     // else if (cmd == "wc")
     // {
@@ -152,7 +152,7 @@ void Parser::CreateCommand(string cmdStr)
     }
     else
     {
-        command = new Command("");
+        command = new Error(cmd);
     }
 
     // split command into command object

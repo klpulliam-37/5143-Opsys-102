@@ -10,6 +10,8 @@ namespace cpprequests {
     void SetUsername(std::string _username);
     std::string GetUsername();
 
+    std::string GetPathByID(std::string id);
+
     bool StartSession(std::string username, std::string password);
     std::string GetCWD();
     std::string GetShellPath();
@@ -18,5 +20,6 @@ namespace cpprequests {
     std::string MakeDirectory(std::string dirName, std::string path = "");
     // std::string Touch(std::string fileName);
     std::vector<std::map<std::string, std::string>> CAT();
+    std::string Grep(std::string keyword, std::string fileName);
 }
 

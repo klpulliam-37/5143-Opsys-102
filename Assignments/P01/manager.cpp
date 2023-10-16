@@ -115,6 +115,9 @@ void Manager::ExecuteCommands()
     string input = "";
     for (int i = 0; i < Commands.size(); i++)
     {
+        if (i == Commands.size() - 1) {
+            Commands.at(i)->SetPrint(true);
+        }
         input = Commands.at(i)->Execute(input);
     }
 

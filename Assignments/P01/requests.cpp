@@ -29,6 +29,18 @@ namespace cpprequests {
         return username;
     }
 
+    std::string GetPathByID(std::string id) {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/path"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"id\": \"" + id + "\"\r\n}"}
+        );
+        std::string text = r.text;
+        // std::cout << "Path by ID: " << text << std::endl;
+
+        return text;
+    }
+
     bool StartSession(std::string username, std::string password) {
         cpr::Response r = cpr::Post(
                                 cpr::Url{url + "/session"},
@@ -153,12 +165,59 @@ namespace cpprequests {
         std::vector<const char*> keys;
         keys.push_back("file_name");
         keys.push_back("file_type");
-        keys.push_back("contents");
+        keys.push_back("id");
+        // keys.push_back("contents");
 
         std::vector<std::map<std::string, std::string>> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
         // jsonhandler::PrintObjs(filesObj);
 
+        for (int m = 0; m < filesObj.size(); m++) {
+            // std::cout << "ID: " << filesObj[m]["id"] << std::endl;
+            std::string str_text = GetPathByID(filesObj[m]["id"]);
+            const char* cstr_text = str_text.c_str();
+            // std::cout << "str_text: " << str_text << std::endl;
+            // std::cout << "cstr_text: " << cstr_text << std::endl;
+            std::string contents = jsonhandler::ExtractValue(jsonhandler::StringToJson(cstr_text), "contents");
+            // std::cout << "Contents: \n" << contents << std::endl;
+            filesObj[m].insert(std::pair<std::string, std::string>("contents", contents));
+        }
+        // jsonhandler::PrintObjs(filesObj);
+
         return filesObj;
+    }
+
+    std::string Grep(std::string keyword, std::string fileName) {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/utilities/ls"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::vector<const char*> keys;
+        keys.push_back("file_name");
+        keys.push_back("file_type");
+        keys.push_back("id");
+        // keys.push_back("contents");
+
+        std::vector<std::map<std::string, std::string>> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
+        // std::cout << "File Name: " << fileName << std::endl;
+
+        for (int m = 0; m < filesObj.size(); m++) {
+            // std::cout << "Looping: " << m << std::endl;
+            // std::cout << "Object File Name: " << filesObj[m]["file_name"] << std::endl;
+            if (filesObj[m]["file_name"] == fileName) {
+                // std::cout << "Filename: " << fileName << " is a match.\n";
+                std::string str_text = GetPathByID(filesObj[m]["id"]);
+                const char* cstr_text = str_text.c_str();
+                std::string contents = jsonhandler::ExtractValue(jsonhandler::StringToJson(cstr_text), "contents");
+                // filesObj[m].insert(std::pair<std::string, std::string>("contents", contents));
+                return contents;
+            }            
+        }
     }
 }
 

@@ -35,7 +35,9 @@ string LS::Execute(string input = "")
         }else {
             filename = file.first;
         }
-        cout << filename << endl;
+        if (Helper::GetHasRedirectO() || GetPrints()) {
+            cout << filename << endl;
+        }
         fileNames += filename + '\n';
     }
 
@@ -112,7 +114,7 @@ string PWD::Execute(string input = "")
     Command::Execute(input);
 
     string pwd = cpprequests::GetCWD();
-    if (!Helper::GetHasRedirectO())
+    if (Helper::GetHasRedirectO() || GetPrints())
     {
         cout << pwd << '\n';
     }
@@ -141,7 +143,7 @@ string CD::Execute(string input = "")
     // cout << "Path: '" << path << "'" << endl;
     newpath = cpprequests::ChangeDirectory(path);
 
-    if (newpath == "Directory does not exist." && !Helper::GetHasRedirectO()) {
+    if (Helper::GetHasRedirectO() || GetPrints()) {
         cout << newpath << endl;
     }
 
@@ -183,13 +185,63 @@ string CAT::Execute(string input = "")
         // If the file doesn't exist, then ignore it.
         for (int i = 0; i < files.size(); i++) {
             if (files[i]["file_name"] == fileName) {
-                cout << files[i]["contents"];
+                if (files[i]["file_type"] == "directory") {
+                    cout << colors::RED() << "cat: " << fileName << ": Is a directory" << colors::RESET() << endl;
+                }
+                else if ((Helper::GetHasRedirectO() || GetPrints())) {
+                    cout << files[i]["contents"] + '\n';
+                }
                 output += files[i]["contents"];
             }
         }
     }
 
     return output;
+}
+
+string Grep::Execute(string input = "") {
+    Command::Execute(input);
+
+    // Get the keyword(first arg), and check for it in the file(second arg)
+    string keyword = "", fileName = "", contents = "", lines = "", line = "";
+    // cout << "Args: " << GetArguments() << endl;
+    stringstream ssArgs(GetArguments());
+    getline(ssArgs, keyword, ' ');
+    getline(ssArgs, fileName);
+
+    keyword = Helper::RemoveWhitespace(keyword);
+    fileName = Helper::RemoveWhitespace(fileName);
+
+    // Get a files contents, split on newlines, and check for the keyword
+    // Also highlight the word in the string
+    // cout << "Before Grep\n";
+    if (input != "") {
+        contents = input;
+    } else {
+        contents = cpprequests::Grep(keyword, fileName);
+    }
+    
+    // cout << "After Grep\n";
+    stringstream ss(contents);
+
+    while(getline(ss, line)) {
+        // cout << "Before find\n";
+        size_t phrase = line.find(keyword);
+        // cout << "After find\n";
+        if (phrase != string::npos) {
+            string part1 = line.substr(0,phrase);
+            string part2 = line.substr(phrase, keyword.size());
+            string part3 = line.substr(phrase + keyword.size(), line.size() - (phrase + keyword.size()));
+            line = part1 + colors::RED() + part2 + colors::RESET() + part3;
+            lines += line + '\n';
+        }
+    }
+
+    if (Helper::GetHasRedirectO() || GetPrints()) {
+        cout << lines;
+    }
+
+    return lines;
 }
 
 string History::Execute(string input = "")
@@ -206,7 +258,9 @@ string History::Execute(string input = "")
         string command = "";
         while(getline(ss, command))
         {
-            cout << historyIndex++ << " " << command << "\n";
+            if (Helper::GetHasRedirectO() || GetPrints()) {
+                cout << historyIndex++ << " " << command << "\n";
+            }
         }
     }
     return history;
@@ -231,4 +285,16 @@ string HistoryIndex::Execute(string input = "")
     }
 
     // use managerRef to reparse command
+}
+
+string Error::Execute(string input = "") {
+    Command::Execute(input);
+
+    string error = colors::RED() + "Error: " + GetCmd() + " command not found." + colors::RESET();
+
+    if (Helper::GetHasRedirectO() || GetPrints()) {
+        cout << error << endl;
+    }
+
+    return error;
 }
