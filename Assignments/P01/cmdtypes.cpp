@@ -186,7 +186,7 @@ string CAT::Execute(string input = "")
         for (int i = 0; i < files.size(); i++) {
             if (files[i]["file_name"] == fileName) {
                 if (Helper::GetHasRedirectO() || GetPrints()) {
-                    cout << files[i]["contents"];
+                    cout << files[i]["contents"] + '\n';
                 }
                 output += files[i]["contents"];
             }

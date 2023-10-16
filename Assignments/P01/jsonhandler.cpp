@@ -63,14 +63,17 @@ std::string jsonhandler::ExtractValue(Document json, const char* key) {
     // const Value& value = json[key];
     Value::ConstMemberIterator itr = json.FindMember(key);
     if (itr == json.MemberEnd()) {
-        return colors::RED() + "Error: No such key in response." + colors::RESET();
+        return colors::RED() + "Error: " + key + ": No such key in response." + colors::RESET();
     }
     
+    // Pretty sure this bool check logic is broken
     if (itr->value.IsBool()) {
         if (itr->value.GetBool()) {
             return "true";
         }
         return "false";
+    } else if (itr->value.IsNumber()) {
+        return std::to_string(itr->value.GetInt());
     }
 
     return itr->value.GetString();
@@ -126,13 +129,14 @@ std::vector<std::map<std::string, std::string>> jsonhandler::ParseObjs(Document 
                 std::string strValue = "null";
 
                 if (value.IsString()) {
-                    std::cout << "Value: " << value.GetString() << "\tstrValue: " << strValue << std::endl;
+                    // std::cout << "Value: " << value.GetString() << "\tValue Type: " << value.GetType() << std::endl;
                     strValue = value.GetString();
                 }
                 else if (value.IsNumber()) {
                     strValue = std::to_string(value.GetInt());
                 }
-
+                
+                // std::cout << "strValue: " << strValue << std::endl;
                 file.insert(std::pair<std::string, std::string>(key, strValue));                
             }
             files.push_back(file);
@@ -146,7 +150,7 @@ void jsonhandler::PrintObjs(std::vector<std::map<std::string, std::string>> objs
     for (int m = 0; m < objs.size(); m++) {
         std::map<std::string, std::string>::iterator itr;
         for (itr = objs[m].begin(); itr != objs[m].end(); ++itr) {
-            std::cout << "Key: " << itr->first << "Value: " << itr->second << '\n';
+            std::cout << "Key: " << itr->first << "\tValue: " << itr->second << '\n';
         }
         std::cout << std::endl;
     }

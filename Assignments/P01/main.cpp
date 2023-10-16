@@ -6,6 +6,7 @@
 // TODO: Fix !x command, causes aborted error and not sure why
 // TODO: Handle bad flags
 // TODO: Implement --help flag for each command and a general help command
+// TODO: Handle user login timeout by checking if r.status_code is == 409
 
 #include <iostream>
 #include "manager.h"
