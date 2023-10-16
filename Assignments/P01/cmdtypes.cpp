@@ -199,6 +199,46 @@ string CAT::Execute(string input = "")
     return output;
 }
 
+string Grep::Execute(string input = "") {
+    Command::Execute(input);
+
+    // Get the keyword(first arg), and check for it in the file(second arg)
+    string keyword = "", fileName = "", contents = "", lines = "", line = "";
+    cout << "Args: " << GetArguments() << endl;
+    stringstream ssArgs(GetArguments());
+    getline(ssArgs, keyword, ' ');
+    getline(ssArgs, fileName);
+
+    keyword = Helper::RemoveWhitespace(keyword);
+    fileName = Helper::RemoveWhitespace(fileName);
+
+    // Get a files contents, split on newlines, and check for the keyword
+    // Also highlight the word in the string
+    // cout << "Before Grep\n";
+    contents = cpprequests::Grep(keyword, fileName);
+    // cout << "After Grep\n";
+    stringstream ss(contents);
+
+    while(getline(ss, line)) {
+        // cout << "Before find\n";
+        size_t phrase = line.find(keyword);
+        // cout << "After find\n";
+        if (phrase != string::npos) {
+            string part1 = line.substr(0,phrase);
+            string part2 = line.substr(phrase, keyword.size());
+            string part3 = line.substr(phrase + keyword.size(), line.size() - (phrase + keyword.size()));
+            line = part1 + colors::RED() + part2 + colors::RESET() + part3;
+            lines += line + '\n';
+        }
+    }
+
+    if (Helper::GetHasRedirectO() || GetPrints()) {
+        cout << lines;
+    }
+
+    return lines;
+}
+
 string History::Execute(string input = "")
 {
     Command::Execute(input);

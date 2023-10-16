@@ -20,5 +20,6 @@ namespace cpprequests {
     std::string MakeDirectory(std::string dirName, std::string path = "");
     // std::string Touch(std::string fileName);
     std::vector<std::map<std::string, std::string>> CAT();
+    std::string Grep(std::string keyword, std::string fileName);
 }
 

@@ -51,6 +51,14 @@ public:
     string Execute(string input) override;
 };
 
+class Grep: public Command
+{
+public:
+    Grep(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class History: public Command
 {
 public:
