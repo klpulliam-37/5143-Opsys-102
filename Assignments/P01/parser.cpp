@@ -126,13 +126,13 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new Head(cmd);
     }
+    // tail
+    else if (cmd == "tail")
+    {
+        command = new Tail(cmd);
+    }
     // // less
     // else if (cmd == "less")
-    // {
-        
-    // }
-    // // tail
-    // else if (cmd == "tail")
     // {
         
     // }

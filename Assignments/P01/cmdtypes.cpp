@@ -196,7 +196,7 @@ string CAT::Execute(string input = "")
         }
     }
 
-    return output;
+    return output + '\n';
 }
 
 string Head::Execute(string input = "") {
@@ -231,6 +231,53 @@ string Head::Execute(string input = "") {
         getline(contentReader, line);
         // cout << "Line: " << line << endl;
         output += line + '\n';
+    }
+
+    // if (Helper::GetHasRedirectO() || GetPrints()) {
+    //     cout << output;
+    // }
+    
+    return output;
+}
+
+string Tail::Execute(string input = "") {
+    string output = "", contents = "";
+    
+    if (input != "") {
+        contents = input;
+    } else {
+        contents = CAT::Execute(input);
+    }
+
+    // cout << "Contents: \n" << contents << endl;
+
+    int numLines = 10;
+    string fileName = "", lines = "", line = "";
+    string flags = PrintFlags();
+    vector<string> lineList;
+    stringstream args(GetArguments());
+    stringstream contentReader(contents);
+
+    getline(args, fileName, ' ');
+
+    if (flags.find('n') != string::npos) {
+        getline(args, lines);
+        numLines = stoi(lines);
+    } // Should do additional checks to see if there are more args provided,
+        // and if so, to cancel the command
+
+    fileName = Helper::RemoveWhitespace(fileName);
+    lines = Helper::RemoveWhitespace(lines);
+
+    while(getline(contentReader, line)) {
+        lineList.push_back(line);
+    }
+
+    // reverse(lineList.begin(), lineList.end());
+
+    for (int i = numLines; i > 0; i--) {
+        int index = lineList.size() - i;
+        output += lineList[index] + '\n';
     }
 
     // if (Helper::GetHasRedirectO() || GetPrints()) {
@@ -333,9 +380,7 @@ string Error::Execute(string input = "") {
 
     string error = colors::RED() + "Error: " + GetCmd() + " command not found." + colors::RESET();
 
-    if (Helper::GetHasRedirectO() || GetPrints()) {
-        cout << error << endl;
-    }
+    cout << error << endl;
 
-    return error;
+    return "";
 }
