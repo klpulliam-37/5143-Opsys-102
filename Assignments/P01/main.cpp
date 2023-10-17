@@ -1,7 +1,8 @@
+// TODO: Outputs are really broken
 // TODO: Create the append functionality when redirecting to a file, AKA '>>' token
 // TODO: Implement the rest of the commands now that the program is connected 
 //       to the Virtual-File-System
-//       - head, less, tail, rmdir, rm, mv, cp, grep, wc, chmod, sort, who, append, input redirect, paging
+//       - head, less, tail, rmdir, rm, mv, cp, wc, chmod, sort, who, append, input redirect, paging
 // TODO: Implement optional path parameter for ls command
 // TODO: Fix !x command, causes aborted error and not sure why
 // TODO: Handle bad flags

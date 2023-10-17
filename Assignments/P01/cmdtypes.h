@@ -51,6 +51,14 @@ public:
     string Execute(string input) override;
 };
 
+class Head: public CAT
+{
+public:
+    Head(string cmd) : CAT(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class Grep: public Command
 {
 public:

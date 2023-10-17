@@ -188,14 +188,55 @@ string CAT::Execute(string input = "")
                 if (files[i]["file_type"] == "directory") {
                     cout << colors::RED() << "cat: " << fileName << ": Is a directory" << colors::RESET() << endl;
                 }
-                else if ((Helper::GetHasRedirectO() || GetPrints())) {
-                    cout << files[i]["contents"] + '\n';
-                }
+                // else if ((Helper::GetHasRedirectO() || GetPrints())) {
+                //     cout << files[i]["contents"] + '\n';
+                // }
                 output += files[i]["contents"];
             }
         }
     }
 
+    return output;
+}
+
+string Head::Execute(string input = "") {
+    string output = "", contents = "";
+    
+    if (input != "") {
+        contents = input;
+    } else {
+        contents = CAT::Execute(input);
+    }
+
+    // cout << "Contents: \n" << contents << endl;
+
+    int numLines = 10;
+    string fileName = "", lines = "", line = "";
+    string flags = PrintFlags();
+    stringstream args(GetArguments());
+    stringstream contentReader(contents);
+
+    getline(args, fileName, ' ');
+
+    if (flags.find('n') != string::npos) {
+        getline(args, lines);
+        numLines = stoi(lines);
+    } // Should do additional checks to see if there are more args provided,
+        // and if so, to cancel the command
+
+    fileName = Helper::RemoveWhitespace(fileName);
+    lines = Helper::RemoveWhitespace(lines);
+
+    for (int i = 0; i < numLines; i++) {
+        getline(contentReader, line);
+        // cout << "Line: " << line << endl;
+        output += line + '\n';
+    }
+
+    // if (Helper::GetHasRedirectO() || GetPrints()) {
+    //     cout << output;
+    // }
+    
     return output;
 }
 
@@ -237,9 +278,9 @@ string Grep::Execute(string input = "") {
         }
     }
 
-    if (Helper::GetHasRedirectO() || GetPrints()) {
-        cout << lines;
-    }
+    // if (Helper::GetHasRedirectO() || GetPrints()) {
+    //     cout << lines;
+    // }
 
     return lines;
 }

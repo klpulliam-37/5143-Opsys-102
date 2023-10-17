@@ -122,6 +122,10 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new CAT(cmd);
     }
+    else if (cmd == "head")
+    {
+        command = new Head(cmd);
+    }
     // // less
     // else if (cmd == "less")
     // {
