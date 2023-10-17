@@ -44,6 +44,8 @@ void Manager::UserLogin() {
         cout << "Please enter your password: ";
         getline(cin, password);
 
+        // username = Helper::RemoveWhitespace(username);
+        // password = Helper::RemoveWhitespace(password);
         credentialsValid = cpprequests::StartSession(username, password);
     }
 }
@@ -115,10 +117,10 @@ void Manager::ExecuteCommands()
     string input = "";
     for (int i = 0; i < Commands.size(); i++)
     {
-        if (i == Commands.size() - 1) {
-            Commands.at(i)->SetPrint(true);
-        }
         input = Commands.at(i)->Execute(input);
+        if (i == Commands.size() - 1) {
+            cout << input;
+        }
     }
 
     // cout << input;
