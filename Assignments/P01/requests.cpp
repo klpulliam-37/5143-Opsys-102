@@ -151,6 +151,22 @@ namespace cpprequests {
         return success;
     }
 
+    std::string RemoveDirectory(std::string path) {
+        cpr::Response r = cpr::Delete(
+            cpr::Url{url + "/path"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
+
+        return success;
+    }
+
     std::vector<std::map<std::string, std::string>> CAT() {
         cpr::Response r = cpr::Get(
             cpr::Url{url + "/utilities/ls"},

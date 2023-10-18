@@ -116,10 +116,10 @@ void Parser::CreateCommand(string cmdStr)
         
     // }
     // // rmdir
-    // else if (cmd == "rmdir")
-    // {
-        
-    // }
+    else if (cmd == "rmdir")
+    {
+        command = new RmDir(cmd);
+    }
     // cat
     else if (cmd == "cat")
     {

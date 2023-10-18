@@ -131,26 +131,56 @@ string CD::Execute(string input = "")
 
     newpath = cpprequests::ChangeDirectory(path);
 
-    return newpath;
+    return "";
 }
 
 string MkDir::Execute(string input = "")
 {
     Command::Execute(input);
 
-    string dirName = "", path = "", success = "";
+    string dirName = "", entirePath = "", path = "", success = "", temp = "";
+    
+    stringstream args(GetArguments());
+    getline(args, entirePath);
+    entirePath = Helper::RemoveWhitespace(entirePath);
+
+    stringstream part(entirePath);
+    vector<string> pathParts;
+
+
+    while (getline(part, temp, '/')) {
+        pathParts.push_back(temp);
+    }
+
+    for (int i = 0; i < pathParts.size() - 1; i++) {
+        path += pathParts.at(i) + '/';
+    }
+
+    dirName = pathParts.back();
+    cout << "Entire Path: " << entirePath << endl;
+    cout << "Path: " << Helper::RemoveWhitespace(path) << endl;
+    cout << "Dir Name: " << Helper::RemoveWhitespace(dirName) << endl;
+
+    success = cpprequests::MakeDirectory(dirName, path);
+    
+    return "";
+}
+
+string RmDir::Execute(string input = "") 
+{
+    Command::Execute(input);
+
+    string output = "";
+
+    string path = "", success = "";
 
     stringstream ss(GetArguments());
-    getline(ss, dirName);
-    dirName = Helper::RemoveWhitespace(dirName);
-    if (!ss.eof()) {
-        getline(ss, path);
-        success = cpprequests::MakeDirectory(dirName, path);
-    }else{
-        success = cpprequests::MakeDirectory(dirName);
-    }
+    getline(ss, path);
+    path = Helper::RemoveWhitespace(path);
+
+    success = cpprequests::RemoveDirectory(path);
     
-    return success;
+    return "";
 }
 
 string CAT::Execute(string input = "")
@@ -188,7 +218,8 @@ string CAT::Execute(string input = "")
     return output;
 }
 
-string Head::Execute(string input = "") {
+string Head::Execute(string input = "") 
+{
     string output = "";
     string contents = CAT::Execute(input);
 
@@ -219,7 +250,8 @@ string Head::Execute(string input = "") {
     return output;
 }
 
-string Tail::Execute(string input = "") {
+string Tail::Execute(string input = "") 
+{
     string output = "";
     
     string contents = CAT::Execute(input);
@@ -338,7 +370,8 @@ string WC::Execute(string input = "") {
     return output;
 }
 
-string Grep::Execute(string input = "") {
+string Grep::Execute(string input = "") 
+{
     Command::Execute(input);
 
     // Get the keyword(first arg), and check for it in the file(second arg)
@@ -426,7 +459,8 @@ string HistoryIndex::Execute(string input = "")
     // use managerRef to reparse command
 }
 
-string Error::Execute(string input = "") {
+string Error::Execute(string input = "") 
+{
     Command::Execute(input);
 
     string error = colors::RED() + "Error: " + GetCmd() + " command not found." + colors::RESET();

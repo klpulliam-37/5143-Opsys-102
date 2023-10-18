@@ -18,6 +18,7 @@ namespace cpprequests {
     std::vector<std::pair<std::string, std::string>> GetLS();
     std::string ChangeDirectory(std::string path);
     std::string MakeDirectory(std::string dirName, std::string path = "");
+    std::string RemoveDirectory(std::string path = "");
     // std::string Touch(std::string fileName);
     std::vector<std::map<std::string, std::string>> CAT();
     std::string Grep(std::string keyword, std::string fileName);
