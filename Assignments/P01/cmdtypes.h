@@ -43,6 +43,22 @@ public:
     string Execute(string input) override;
 };
 
+class RmDir: public Command
+{
+public:
+    RmDir(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
+class RM: public Command
+{
+public:
+    RM(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class CAT: public Command
 {
 public:

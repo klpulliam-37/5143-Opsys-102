@@ -94,7 +94,9 @@ namespace cpprequests {
         colors::RESET() + "% ";
     }
 
-    std::vector<std::pair<std::string, std::string>> GetLS() {
+    std::vector<std::map<std::string, std::string>> GetLS(std::string path) {
+        std::string body = "{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n    \"path\": \"" + path + "\"\r\n}";
+
         cpr::Response r = cpr::Get(
             cpr::Url{url + "/utilities/ls"},
             header,
@@ -105,7 +107,18 @@ namespace cpprequests {
 
         // std::cout << text << std::endl;
 
-        std::vector<std::pair<std::string, std::string>> files = jsonhandler::ParseList(jsonhandler::StringToJson(text), "file_name");
+        std::vector<const char*> keys;
+        keys.push_back("file_name");
+        keys.push_back("file_type");
+        keys.push_back("file_size");
+        keys.push_back("group_id");
+        keys.push_back("id");
+        keys.push_back("modification_time");
+        keys.push_back("permissions");
+        keys.push_back("pid");
+        keys.push_back("user_id");
+
+        std::vector<std::map<std::string, std::string>> files = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
         return files;
     }
 
@@ -148,6 +161,70 @@ namespace cpprequests {
 
         std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
 
+        return success;
+    }
+
+    std::string RemoveDirectory(std::string path) {
+        cpr::Response r = cpr::Delete(
+            cpr::Url{url + "/path"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        if (r.status_code >= 404) {
+            std::cout << colors::RED() << "Error: Doesn't exist" << colors::RESET() << std::endl;
+            return "false";
+        }
+
+        // std::cout << text << std::endl;
+
+        std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
+        // std::string message = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "message");
+
+        return success;
+    }
+
+    std::string Remove(std::string fileName, std::string path) {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/utilities/ls"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::vector<const char*> keys;
+        keys.push_back("file_name");
+        keys.push_back("file_type");
+
+        std::vector<std::map<std::string, std::string>> filesObj = jsonhandler::ParseObjs(jsonhandler::StringToJson(text), keys);
+        // std::cout << "File Name: " << fileName << std::endl;
+
+        std::string success = "false";
+        for (int m = 0; m < filesObj.size(); m++) {
+            // std::cout << "Looping: " << m << std::endl;
+            // std::cout << "Object File Name: " << filesObj[m]["file_name"] << std::endl;
+            if (filesObj[m]["file_name"] == fileName) {
+                if (filesObj[m]["file_type"] == "file") {
+                    return RemoveDirectory(path + fileName);
+                } else {
+                    std::cout << colors::RED() << "rm: cannot remove '" << path << "': Is a directory" << colors::RESET() << std::endl;
+                    return "";
+                }
+                // std::cout << "Filename: " << fileName << " is a match.\n";
+                // std::string str_text = GetPathByID(filesObj[m]["id"]);
+                // const char* cstr_text = str_text.c_str();
+                // filesObj[m].insert(std::pair<std::string, std::string>("contents", contents));
+            }
+        }
+
+        std::cout << colors::RED() << "rm: cannot remove '" << path + fileName << "': No such file or directory" << colors::RESET() << std::endl;
         return success;
     }
 
