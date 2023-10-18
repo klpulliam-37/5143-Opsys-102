@@ -100,6 +100,7 @@ bool Manager::WaitForCommand()
     } else if (cmds == "logout") 
     {
         UserLogin();
+        return true;
     }
 
     parser->SplitCommand(cmds);

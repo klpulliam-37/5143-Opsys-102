@@ -157,7 +157,11 @@ string CD::Execute(string input = "")
 
     path = Helper::RemoveWhitespace(path);
 
-    newpath = cpprequests::ChangeDirectory(path);
+    if (path == "~") {
+        newpath = cpprequests::ChangeDirectory("/home");
+    } else {
+        newpath = cpprequests::ChangeDirectory(path);
+    }
 
     return "";
 }
@@ -538,21 +542,19 @@ string Who::Execute(string input = "") {
 string History::Execute(string input = "")
 {
     Command::Execute(input);
+
+    Helper::SetIsSpecialPrint(true);
     // Be sure to adjust index to index - 1 when 
     // accessing history list in manager.
     int historyIndex = 1;
 
     string history = Helper::GetHistory();
     stringstream ss(history);
-    if (!Helper::GetHasRedirectO())
+    string command = "";
+    while(getline(ss, command))
     {
-        string command = "";
-        while(getline(ss, command))
-        {
-            if (Helper::GetHasRedirectO() || GetPrints()) {
-                cout << historyIndex++ << " " << command << "\n";
-            }
-        }
+
+        cout << historyIndex++ << " " << command << "\n";
     }
     return history;
 }
@@ -576,6 +578,7 @@ string HistoryIndex::Execute(string input = "")
     }
 
     // use managerRef to reparse command
+    return "";
 }
 
 string Error::Execute(string input = "") 

@@ -387,7 +387,7 @@ namespace cpprequests {
         std::string contents = jsonhandler::UnpackArray(jsonhandler::StringToJson(text));
         // std::cout << "In Sort\n" << contents << std::endl;
 
-        return contents;
+        return "";
     }
 
     std::string Who() {
