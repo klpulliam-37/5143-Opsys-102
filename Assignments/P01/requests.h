@@ -16,6 +16,7 @@ namespace cpprequests {
     std::string GetCWD();
     std::string GetShellPath();
     std::vector<std::map<std::string, std::string>> GetLS(std::string path = "");
+    std::string GetUser(std::string user_id);
     std::string ChangeDirectory(std::string path);
     std::string MakeDirectory(std::string dirName, std::string path = "");
     std::string RemoveDirectory(std::string path = "");

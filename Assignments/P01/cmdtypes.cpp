@@ -24,9 +24,11 @@ string LS::Execute(string input = "")
 {
     Command::Execute(input);
 
+    string path = Helper::RemoveWhitespace(GetArguments());
+
     string files = "";
 
-    vector<map<string, string>> filesList = cpprequests::GetLS();
+    vector<map<string, string>> filesList = cpprequests::GetLS(path);
    
     string flags = PrintFlags();
     // cout << "Flags: " << flags << endl;
@@ -34,17 +36,17 @@ string LS::Execute(string input = "")
     // Check for show all flag
     if (flags.find('a') != string::npos)
     {
-        cout << "Show Hidden active\n";
+        // cout << "Show Hidden active\n";
         showHidden = true;
     }
     else if (flags.find('l') != string::npos)
     {
-        cout << "Long Listing active\n";
+        // cout << "Long Listing active\n";
         longListing = true;
     }
     else if (flags.find('h') != string::npos)
     {
-        cout << "Human Readable active\n";
+        // cout << "Human Readable active\n";
         humanReadable = true;
     }
 
@@ -67,11 +69,16 @@ string LS::Execute(string input = "")
             }else {
                 filename = filesList[i]["file_name"];
             }
+            stringstream userinfo(cpprequests::GetUser(filesList[i]["user_id"]));
+            string user = "", group = "";
+            getline(userinfo, user);
+            // getline(userinfo, group);
             // cout << "Before cout\n";
             cout << left << setw(11) << filesList[i]["permissions"] 
-                << setw(filesList[i]["user_id"].length() + 1) << filesList[i]["user_id"]
+                << setw(user.length() + 1) << user
+                << setw(user.length() + 1) << user
                 << right << setw(6) << filesList[i]["file_size"]
-                << setw(27/*13*/) << filesList[i]["modification_time"]
+                << setw(13) << Helper::ConvertDateTime(filesList[i]["modification_time"])
                 << ' ' << filename << endl;
             files += filename + '\n';
         }

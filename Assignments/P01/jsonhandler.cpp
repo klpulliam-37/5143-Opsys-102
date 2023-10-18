@@ -76,6 +76,8 @@ std::string jsonhandler::ExtractValue(Document json, const char* key) {
         return std::to_string(itr->value.GetInt());
     } else if (itr->value.IsNull()) {
         return "";
+    } else if (itr->value.IsArray()) {
+        
     }
 
     return itr->value.GetString();
