@@ -9,6 +9,7 @@ using namespace std;
 std::vector<std::string> Helper::History;
 bool Helper::HasRedirectO = false;
 bool Helper::IsAppendMode = false;
+bool Helper::IsSpecialPrint = false;
 string Helper::Outfile = "";
 
 string Helper::GetDir()
@@ -84,6 +85,14 @@ void Helper::SetIsAppendMode(bool _IsAppendMode) {
 
 bool Helper::GetIsAppendMode() {
     return IsAppendMode;
+}
+
+void Helper::SetIsSpecialPrint(bool _IsSpecialPrint) {
+    IsSpecialPrint = _IsSpecialPrint;
+}
+
+bool Helper::GetIsSpecialPrint() {
+    return IsSpecialPrint;
 }
 
 string Helper::GetOutfile()
