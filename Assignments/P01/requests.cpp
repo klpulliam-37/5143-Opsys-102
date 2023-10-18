@@ -231,10 +231,18 @@ namespace cpprequests {
     }
 
     std::string Remove(std::string fileName, std::string path) {
+        std::string body = "";
+
+        if (path == "") {
+            body = "{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}";
+        } else {
+            body = "{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}";
+        }
+
         cpr::Response r = cpr::Get(
             cpr::Url{url + "/utilities/ls"},
             header,
-            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}"}
+            cpr::Body{body}
         );
 
         const char* text = r.text.c_str();
@@ -267,6 +275,32 @@ namespace cpprequests {
         }
 
         std::cout << colors::RED() << "rm: cannot remove '" << path + fileName << "': No such file or directory" << colors::RESET() << std::endl;
+        return success;
+    }
+
+    std::string Touch(std::string fileName, std::string path) {
+        std::string body = "";
+
+        if (path == "") {
+            // body = "{\r\n    \"file_name\": \"" + dirName + "\",\r\n    \"file_type\": \"directory\",\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"contents\": \"\"\r\n}";
+            body = "{\r\n    \"file_name\": \"" + fileName + "\",\r\n    \"file_type\": \"file\",\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}";
+        }else{
+            // body = "{\r\n    \"file_name\": \"" + dirName + "\",\r\n    \"file_type\": \"directory\",\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"contents\": \"\",\r\n    \"path\": \"" + path + "\"\r\n}";
+            body = "{\r\n    \"file_name\": \"" + fileName + "\",\r\n    \"file_type\": \"file\",\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}";
+        }
+
+        cpr::Response r = cpr::Post(
+            cpr::Url{url + "/path"},
+            header,
+            cpr::Body{body}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
+
         return success;
     }
 

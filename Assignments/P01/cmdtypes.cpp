@@ -198,6 +198,40 @@ string MkDir::Execute(string input = "")
     return "";
 }
 
+string Touch::Execute(string input = "") {
+    Command::Execute(input);
+
+    string entirePath = "";
+    stringstream args(GetArguments());
+    while(getline(args, entirePath, ' ')) {
+        string fileName = "", path = "", success = "", temp = "";
+
+        entirePath = Helper::RemoveWhitespace(entirePath);
+
+        stringstream part(entirePath);
+        vector<string> pathParts;
+
+
+        while (getline(part, temp, '/')) {
+            pathParts.push_back(temp);
+        }
+
+        for (int i = 0; i < pathParts.size() - 1; i++) {
+            path += pathParts.at(i) + '/';
+        }
+
+        fileName = pathParts.back();
+        // cout << "Entire Path: " << entirePath << endl;
+        // cout << "Path: " << Helper::RemoveWhitespace(path) << endl;
+        // cout << "Dir Name: " << Helper::RemoveWhitespace(fileName) << endl;
+
+        success = cpprequests::Touch(fileName, path);
+    }
+    
+    
+    return "";
+}
+
 string RmDir::Execute(string input = "") 
 {
     Command::Execute(input);
@@ -218,32 +252,38 @@ string RmDir::Execute(string input = "")
 string RM::Execute(string input = "") {
     Command::Execute(input);
 
-    string fileName = "", entirePath = "", path = "", success = "", temp = "";
     
+    string entirePath = "";
     stringstream args(GetArguments());
-    getline(args, entirePath);
-    entirePath = Helper::RemoveWhitespace(entirePath);
+    while (getline(args, entirePath, ' ')) {
+        string fileName = "", path = "", success = "", temp = "";
+        entirePath = Helper::RemoveWhitespace(entirePath);
 
-    stringstream part(entirePath);
-    vector<string> pathParts;
+        stringstream part(entirePath);
+        vector<string> pathParts;
 
 
-    while (getline(part, temp, '/')) {
-        pathParts.push_back(temp);
+        while (getline(part, temp, '/')) {
+            pathParts.push_back(temp);
+        }
+
+        // if (pathParts.size() != 1) {
+            
+        // }
+        for (int i = 0; i < pathParts.size() - 1; i++) {
+            path += pathParts.at(i) + '/';
+        }
+
+        fileName = pathParts.back();
+        path = Helper::RemoveWhitespace(path);
+        fileName = Helper::RemoveWhitespace(fileName);
+        // cout << "Entire Path: '" << entirePath << "'" << endl;
+        // cout << "Path: '" << path << "'" << endl;
+        // cout << "File Name: '" << fileName << "'" << endl;
+
+        success = cpprequests::Remove(fileName, path);
     }
-
-    for (int i = 0; i < pathParts.size() - 1; i++) {
-        path += pathParts.at(i) + '/';
-    }
-
-    fileName = pathParts.back();
-    path = Helper::RemoveWhitespace(path);
-    fileName = Helper::RemoveWhitespace(fileName);
-    // cout << "Entire Path: " << entirePath << endl;
-    // cout << "Path: " << path << endl;
-    // cout << "File Name: " << fileName << endl;
-
-    success = cpprequests::Remove(fileName, path);
+    
     
     return "";
 }
