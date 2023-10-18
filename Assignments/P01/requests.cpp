@@ -95,12 +95,17 @@ namespace cpprequests {
     }
 
     std::vector<std::map<std::string, std::string>> GetLS(std::string path) {
-        std::string body = "{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n    \"path\": \"" + path + "\"\r\n}";
+        std::string body = "";
+        if (path == "") {
+            body = "{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}";
+        } else {
+            body = "{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + path + "\"\r\n}";
+        }
 
         cpr::Response r = cpr::Get(
             cpr::Url{url + "/utilities/ls"},
             header,
-            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}"}
+            cpr::Body{body}
         );
 
         const char* text = r.text.c_str();

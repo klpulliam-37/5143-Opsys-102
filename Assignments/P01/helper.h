@@ -8,6 +8,7 @@ private:
     std::vector<std::string> static History;
     static bool HasRedirectO;
     static bool IsAppendMode;
+    static bool IsSpecialPrint;
     static std::string Outfile;
 
 public:
@@ -22,6 +23,8 @@ public:
     bool static GetHasRedirectO();
     void static SetIsAppendMode(bool _IsAppendMode);
     bool static GetIsAppendMode();
+    void static SetIsSpecialPrint(bool _IsSpecialPrint);
+    bool static GetIsSpecialPrint();
     std::string static GetOutfile();
     std::string static RemoveWhitespace(std::string _str);
 };

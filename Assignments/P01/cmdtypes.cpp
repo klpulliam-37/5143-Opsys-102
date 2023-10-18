@@ -29,18 +29,22 @@ string LS::Execute(string input = "")
     vector<map<string, string>> filesList = cpprequests::GetLS();
    
     string flags = PrintFlags();
+    // cout << "Flags: " << flags << endl;
 
     // Check for show all flag
     if (flags.find('a') != string::npos)
     {
+        cout << "Show Hidden active\n";
         showHidden = true;
     }
     else if (flags.find('l') != string::npos)
     {
+        cout << "Long Listing active\n";
         longListing = true;
     }
     else if (flags.find('h') != string::npos)
     {
+        cout << "Human Readable active\n";
         humanReadable = true;
     }
 
@@ -53,7 +57,34 @@ string LS::Execute(string input = "")
     // -l
     else if (!showHidden && longListing && !humanReadable)
     {
-        
+        // cout << "Before Looping\n";
+        Helper::SetIsSpecialPrint(true);
+        for (int i = 0; i < filesList.size(); i++) {
+            // cout << "Looping\n";
+            string filename = "";
+            if (filesList[i]["file_type"] == "directory") {
+                filename = colors::BLUE() + filesList[i]["file_name"] + colors::RESET();
+            }else {
+                filename = filesList[i]["file_name"];
+            }
+            // cout << "Before cout\n";
+            cout << left << setw(11) << filesList[i]["permissions"] 
+                << setw(filesList[i]["user_id"].length() + 1) << filesList[i]["user_id"]
+                << right << setw(6) << filesList[i]["file_size"]
+                << setw(27/*13*/) << filesList[i]["modification_time"]
+                << ' ' << filename << endl;
+            files += filename + '\n';
+        }
+
+        // "file_name": "d.txt",
+        // "file_size": 33,
+        // "file_type": "file",
+        // "group_id": 2,
+        // "id": 11,
+        // "modification_time": "2023-10-18T00:20:51.150793",
+        // "permissions": "-rwxr-x--x",
+        // "pid": 2,
+        // "user_id": 1
     }
     // -h
     else if (!showHidden && !longListing && humanReadable)
@@ -83,18 +114,18 @@ string LS::Execute(string input = "")
     // no flags or all flags (-lah)
     else
     {
-        // for (int i = 0; i < files.size(); i++) {
-        //     string filename = "";
-        //     if (files[i]["file_type"] == "directory") {
-        //         filename = colors::BLUE() + files[i]["file_name"] + colors::RESET();
-        //     }else {
-        //         filename = files[i]["file_name"];
-        //     }
-        //     files += filename + '\n';
-        // }
+        for (int i = 0; i < filesList.size(); i++) {
+            string filename = "";
+            if (filesList[i]["file_type"] == "directory") {
+                filename = colors::BLUE() + filesList[i]["file_name"] + colors::RESET();
+            }else {
+                filename = filesList[i]["file_name"];
+            }
+            files += filename + '\n';
+        }
     }
     
-        
+    return files;
 }
 
 string PWD::Execute(string input = "")

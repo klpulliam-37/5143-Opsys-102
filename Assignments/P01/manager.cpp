@@ -106,6 +106,7 @@ bool Manager::WaitForCommand()
     ClearCommands();
     Helper::SetHasRedirectO(false, ""); // Reset redirect
     Helper::SetIsAppendMode(false);
+    Helper::SetIsSpecialPrint(false);
     return true;
 }
 
@@ -120,7 +121,7 @@ void Manager::ExecuteCommands()
     for (int i = 0; i < Commands.size(); i++)
     {
         input = Commands.at(i)->Execute(input);
-        if (i == Commands.size() - 1 && !Helper::GetHasRedirectO()) {
+        if (i == Commands.size() - 1 && !Helper::GetHasRedirectO() && !Helper::GetIsSpecialPrint()) {
             cout << input;
         }
     }
