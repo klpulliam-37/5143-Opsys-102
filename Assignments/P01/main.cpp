@@ -1,6 +1,6 @@
 // TODO: Implement the rest of the commands now that the program is connected 
 //       to the Virtual-File-System
-//       - less, rm?, mv, cp?, wc?, chmod?, sort?, who?, input redirect, paging
+//       - less, mv, cp?, wc!, chmod?, sort?, who?, input redirect, paging
 // TODO: Implement optional path parameter for ls command
 // TODO: Fix !x command, causes aborted error and not sure why
 // TODO: Handle bad flags

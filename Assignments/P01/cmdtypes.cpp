@@ -24,86 +24,76 @@ string LS::Execute(string input = "")
 {
     Command::Execute(input);
 
-    string fileNames = "";
+    string files = "";
 
-    vector<pair<string, string>> files = cpprequests::GetLS();
+    vector<map<string, string>> filesList = cpprequests::GetLS();
+   
+    string flags = PrintFlags();
 
-    string filename = "";
-    // Iterate over the vector using a range-based for loop
-    for (const pair<string, string>& file : files) {
-        if (file.second == "directory") {
-            filename = colors::BLUE() + file.first + colors::RESET();
-        }else {
-            filename = file.first;
-        }
-        fileNames += filename + '\n';
+    // Check for show all flag
+    if (flags.find('a') != string::npos)
+    {
+        showHidden = true;
+    }
+    else if (flags.find('l') != string::npos)
+    {
+        longListing = true;
+    }
+    else if (flags.find('h') != string::npos)
+    {
+        humanReadable = true;
     }
 
-    return fileNames;
+    // -a
+    if (showHidden && !longListing && !humanReadable)
+    {
 
-    // if (!Helper::GetHasRedirectO())
-    // {
-        // // vector<string> flags = GetFlags();
-        // string flags = PrintFlags();
 
-        // // Check for show all flag
-        // if (flags.find('a') != string::npos)
-        // {
-        //     showHidden = true;
-        // }
-        // else if (flags.find('l') != string::npos)
-        // {
-        //     longListing = true;
-        // }
-        // else if (flags.find('h') != string::npos)
-        // {
-        //     humanReadable = true;
-        // }
-
-        // // -a
-        // if (showHidden && !longListing && !humanReadable)
-        // {
-        //     cout << filepath.back() << '\n';
-        // }
-        // // -l
-        // else if (!showHidden && longListing && !humanReadable)
-        // {
-            
-        // }
-        // // -h
-        // else if (!showHidden && !longListing && humanReadable)
-        // {
-            
-        // }
-        // // -al
-        // else if (showHidden && longListing && !humanReadable)
-        // {
-            
-        // }
-        // // -ah
-        // else if (showHidden && !longListing && humanReadable)
-        // {
-            
-        // }
-        // // -lh
-        // else if (!showHidden && longListing && humanReadable)
-        // {
-            
-        // }
-        // // -alh
-        // else if (showHidden && longListing && humanReadable)
-        // {
-            
-        // }
-        // // no flags
-        // else
-        // {
-        //     if (filepath.back()[0] != '.')
-        //     {
-        //         cout << filepath.back() << '\n';
+    }
+    // -l
+    else if (!showHidden && longListing && !humanReadable)
+    {
+        
+    }
+    // -h
+    else if (!showHidden && !longListing && humanReadable)
+    {
+        
+    }
+    // -al
+    else if (showHidden && longListing && !humanReadable)
+    {
+        
+    }
+    // -ah
+    else if (showHidden && !longListing && humanReadable)
+    {
+        
+    }
+    // -lh
+    else if (!showHidden && longListing && humanReadable)
+    {
+        
+    }
+    // -alh
+    else if (showHidden && longListing && humanReadable)
+    {
+        
+    }
+    // no flags or all flags (-lah)
+    else
+    {
+        // for (int i = 0; i < files.size(); i++) {
+        //     string filename = "";
+        //     if (files[i]["file_type"] == "directory") {
+        //         filename = colors::BLUE() + files[i]["file_name"] + colors::RESET();
+        //     }else {
+        //         filename = files[i]["file_name"];
         //     }
+        //     files += filename + '\n';
         // }
-    // }
+    }
+    
         
 }
 
@@ -157,9 +147,9 @@ string MkDir::Execute(string input = "")
     }
 
     dirName = pathParts.back();
-    cout << "Entire Path: " << entirePath << endl;
-    cout << "Path: " << Helper::RemoveWhitespace(path) << endl;
-    cout << "Dir Name: " << Helper::RemoveWhitespace(dirName) << endl;
+    // cout << "Entire Path: " << entirePath << endl;
+    // cout << "Path: " << Helper::RemoveWhitespace(path) << endl;
+    // cout << "Dir Name: " << Helper::RemoveWhitespace(dirName) << endl;
 
     success = cpprequests::MakeDirectory(dirName, path);
     
@@ -179,6 +169,39 @@ string RmDir::Execute(string input = "")
     path = Helper::RemoveWhitespace(path);
 
     success = cpprequests::RemoveDirectory(path);
+    
+    return "";
+}
+
+string RM::Execute(string input = "") {
+    Command::Execute(input);
+
+    string fileName = "", entirePath = "", path = "", success = "", temp = "";
+    
+    stringstream args(GetArguments());
+    getline(args, entirePath);
+    entirePath = Helper::RemoveWhitespace(entirePath);
+
+    stringstream part(entirePath);
+    vector<string> pathParts;
+
+
+    while (getline(part, temp, '/')) {
+        pathParts.push_back(temp);
+    }
+
+    for (int i = 0; i < pathParts.size() - 1; i++) {
+        path += pathParts.at(i) + '/';
+    }
+
+    fileName = pathParts.back();
+    path = Helper::RemoveWhitespace(path);
+    fileName = Helper::RemoveWhitespace(fileName);
+    cout << "Entire Path: " << entirePath << endl;
+    cout << "Path: " << path << endl;
+    cout << "File Name: " << fileName << endl;
+
+    success = cpprequests::Remove(fileName, path);
     
     return "";
 }

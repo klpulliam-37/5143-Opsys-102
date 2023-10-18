@@ -110,11 +110,11 @@ void Parser::CreateCommand(string cmdStr)
     // {
         
     // }
-    // // rm
-    // else if (cmd == "rm")
-    // {
-        
-    // }
+    // rm
+    else if (cmd == "rm")
+    {
+        command = new RM(cmd);
+    }
     // // rmdir
     else if (cmd == "rmdir")
     {

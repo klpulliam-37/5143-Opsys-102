@@ -15,10 +15,11 @@ namespace cpprequests {
     bool StartSession(std::string username, std::string password);
     std::string GetCWD();
     std::string GetShellPath();
-    std::vector<std::pair<std::string, std::string>> GetLS();
+    std::vector<std::map<std::string, std::string>> GetLS(std::string path = "");
     std::string ChangeDirectory(std::string path);
     std::string MakeDirectory(std::string dirName, std::string path = "");
     std::string RemoveDirectory(std::string path = "");
+    std::string Remove(std::string fileName, std::string path = "");
     // std::string Touch(std::string fileName);
     std::vector<std::map<std::string, std::string>> CAT();
     std::string Grep(std::string keyword, std::string fileName);
