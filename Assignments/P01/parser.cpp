@@ -90,6 +90,9 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new MkDir(cmd);
     }
+    else if (cmd == "touch") {
+        command = new Touch(cmd);
+    }
     // cd
     else if (cmd == "cd")
     {

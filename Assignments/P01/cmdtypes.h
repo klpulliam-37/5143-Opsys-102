@@ -43,6 +43,14 @@ public:
     string Execute(string input) override;
 };
 
+class Touch: public Command 
+{
+public:
+    Touch(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class RmDir: public Command
 {
 public:

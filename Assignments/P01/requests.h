@@ -21,6 +21,7 @@ namespace cpprequests {
     std::string MakeDirectory(std::string dirName, std::string path = "");
     std::string RemoveDirectory(std::string path = "");
     std::string Remove(std::string fileName, std::string path = "");
+    std::string Touch(std::string fileName, std::string path = "");
     std::string Copy(std::string path1, std::string path2);
     // std::string Touch(std::string fileName);
     std::vector<std::map<std::string, std::string>> CAT();

@@ -93,7 +93,7 @@ std::string jsonhandler::UnpackArray(Document json) {
                 // Access the string value
                 contents += json[i].GetString() + '\n';
                 // std::cout << contents;
-                // std::cout << json[i].GetString() << std::endl;
+                std::cout << json[i].GetString() << std::endl;
             }
         }
     }

@@ -157,7 +157,11 @@ string CD::Execute(string input = "")
 
     path = Helper::RemoveWhitespace(path);
 
-    newpath = cpprequests::ChangeDirectory(path);
+    if (path == "~") {
+        newpath = cpprequests::ChangeDirectory("/home");
+    } else {
+        newpath = cpprequests::ChangeDirectory(path);
+    }
 
     return "";
 }
@@ -194,6 +198,40 @@ string MkDir::Execute(string input = "")
     return "";
 }
 
+string Touch::Execute(string input = "") {
+    Command::Execute(input);
+
+    string entirePath = "";
+    stringstream args(GetArguments());
+    while(getline(args, entirePath, ' ')) {
+        string fileName = "", path = "", success = "", temp = "";
+
+        entirePath = Helper::RemoveWhitespace(entirePath);
+
+        stringstream part(entirePath);
+        vector<string> pathParts;
+
+
+        while (getline(part, temp, '/')) {
+            pathParts.push_back(temp);
+        }
+
+        for (int i = 0; i < pathParts.size() - 1; i++) {
+            path += pathParts.at(i) + '/';
+        }
+
+        fileName = pathParts.back();
+        // cout << "Entire Path: " << entirePath << endl;
+        // cout << "Path: " << Helper::RemoveWhitespace(path) << endl;
+        // cout << "Dir Name: " << Helper::RemoveWhitespace(fileName) << endl;
+
+        success = cpprequests::Touch(fileName, path);
+    }
+    
+    
+    return "";
+}
+
 string RmDir::Execute(string input = "") 
 {
     Command::Execute(input);
@@ -214,32 +252,38 @@ string RmDir::Execute(string input = "")
 string RM::Execute(string input = "") {
     Command::Execute(input);
 
-    string fileName = "", entirePath = "", path = "", success = "", temp = "";
     
+    string entirePath = "";
     stringstream args(GetArguments());
-    getline(args, entirePath);
-    entirePath = Helper::RemoveWhitespace(entirePath);
+    while (getline(args, entirePath, ' ')) {
+        string fileName = "", path = "", success = "", temp = "";
+        entirePath = Helper::RemoveWhitespace(entirePath);
 
-    stringstream part(entirePath);
-    vector<string> pathParts;
+        stringstream part(entirePath);
+        vector<string> pathParts;
 
 
-    while (getline(part, temp, '/')) {
-        pathParts.push_back(temp);
+        while (getline(part, temp, '/')) {
+            pathParts.push_back(temp);
+        }
+
+        // if (pathParts.size() != 1) {
+            
+        // }
+        for (int i = 0; i < pathParts.size() - 1; i++) {
+            path += pathParts.at(i) + '/';
+        }
+
+        fileName = pathParts.back();
+        path = Helper::RemoveWhitespace(path);
+        fileName = Helper::RemoveWhitespace(fileName);
+        // cout << "Entire Path: '" << entirePath << "'" << endl;
+        // cout << "Path: '" << path << "'" << endl;
+        // cout << "File Name: '" << fileName << "'" << endl;
+
+        success = cpprequests::Remove(fileName, path);
     }
-
-    for (int i = 0; i < pathParts.size() - 1; i++) {
-        path += pathParts.at(i) + '/';
-    }
-
-    fileName = pathParts.back();
-    path = Helper::RemoveWhitespace(path);
-    fileName = Helper::RemoveWhitespace(fileName);
-    // cout << "Entire Path: " << entirePath << endl;
-    // cout << "Path: " << path << endl;
-    // cout << "File Name: " << fileName << endl;
-
-    success = cpprequests::Remove(fileName, path);
+    
     
     return "";
 }
@@ -538,21 +582,19 @@ string Who::Execute(string input = "") {
 string History::Execute(string input = "")
 {
     Command::Execute(input);
+
+    Helper::SetIsSpecialPrint(true);
     // Be sure to adjust index to index - 1 when 
     // accessing history list in manager.
     int historyIndex = 1;
 
     string history = Helper::GetHistory();
     stringstream ss(history);
-    if (!Helper::GetHasRedirectO())
+    string command = "";
+    while(getline(ss, command))
     {
-        string command = "";
-        while(getline(ss, command))
-        {
-            if (Helper::GetHasRedirectO() || GetPrints()) {
-                cout << historyIndex++ << " " << command << "\n";
-            }
-        }
+
+        cout << historyIndex++ << " " << command << "\n";
     }
     return history;
 }
@@ -576,6 +618,7 @@ string HistoryIndex::Execute(string input = "")
     }
 
     // use managerRef to reparse command
+    return "";
 }
 
 string Error::Execute(string input = "") 
