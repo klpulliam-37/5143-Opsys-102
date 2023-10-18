@@ -141,11 +141,11 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new Grep(cmd);
     }
-    // // wc
-    // else if (cmd == "wc")
-    // {
-        
-    // }
+    // wc
+    else if (cmd == "wc")
+    {
+        command = new WC(cmd);   
+    }
     else if (cmd == "history")
     {
         command = new History(cmd);

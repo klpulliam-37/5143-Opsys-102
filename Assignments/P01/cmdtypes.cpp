@@ -1,13 +1,14 @@
 #pragma once
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <vector>
 #include <map>
 #include <algorithm>
-#include <filesystem>
-#include <sys/stat.h>
-#include <algorithm>
+// #include <filesystem>
+// #include <sys/stat.h>
+// #include <algorithm>
 
 #include "manager.h"
 #include "parser.h"
@@ -17,7 +18,7 @@
 #include "colors.h"
 
 using namespace std;
-namespace fs = std::filesystem;
+// namespace fs = std::filesystem;
 
 string LS::Execute(string input = "")
 {
@@ -174,29 +175,37 @@ string CAT::Execute(string input = "")
     Command::Execute(input);
 
     string output = "";
-    vector<map<string, string>> files = cpprequests::CAT();
-    stringstream ss(GetArguments());
-    string fileName;
 
-    while (getline(ss, fileName, ' ')) {
-        fileName = Helper::RemoveWhitespace(fileName);
-        
-        // Find the files specified in the cmd arguments and ensure it is a file.
-        // If the file doesn't exist, then ignore it.
-        for (int i = 0; i < files.size(); i++) {
-            if (files[i]["file_name"] == fileName) {
-                if (files[i]["file_type"] == "directory") {
-                    cout << colors::RED() << "cat: " << fileName << ": Is a directory" << colors::RESET() << endl;
+    if (input != "" && GetArguments() == "") {
+        // cout << "Args: '" << GetArguments() << "'\n";
+        output = input;
+    } else {
+        vector<map<string, string>> files = cpprequests::CAT();
+        stringstream ss(GetArguments());
+        string fileName;
+
+        while (getline(ss, fileName, ' ')) {
+            fileName = Helper::RemoveWhitespace(fileName);
+            
+            // Find the files specified in the cmd arguments and ensure it is a file.
+            // If the file doesn't exist, then ignore it.
+            for (int i = 0; i < files.size(); i++) {
+                if (files[i]["file_name"] == fileName) {
+                    if (files[i]["file_type"] == "directory") {
+                        cout << colors::RED() << "cat: " << fileName << ": Is a directory" << colors::RESET() << endl;
+                    }
+                    // else if ((Helper::GetHasRedirectO() || GetPrints())) {
+                    //     cout << files[i]["contents"] + '\n';
+                    // }
+                    output += files[i]["contents"];
                 }
-                // else if ((Helper::GetHasRedirectO() || GetPrints())) {
-                //     cout << files[i]["contents"] + '\n';
-                // }
-                output += files[i]["contents"];
             }
         }
+        output += '\n';
     }
+    
 
-    return output + '\n';
+    return output;
 }
 
 string Head::Execute(string input = "") {
@@ -284,6 +293,99 @@ string Tail::Execute(string input = "") {
     //     cout << output;
     // }
     
+    return output;
+}
+
+string WC::Execute(string input = "") {
+    string output = "", contents = "";
+    
+    if (input != "") {
+        contents = input;
+    } else {
+        contents = CAT::Execute(input);
+    }
+
+    string flags = PrintFlags();
+
+    // Check for show all flag
+    if (flags.find('l') != string::npos)
+    {
+        showLines = true;
+    }
+    else if (flags.find('w') != string::npos)
+    {
+        showWords = true;
+    }
+    else if (flags.find('c') != string::npos)
+    {
+        showCharacters = true;
+    }
+
+    int lineCount = 0, wordCount = 0, characterCount = 0;
+    string copy = contents;
+    string line = "", word = "", character = "";
+    stringstream stream(copy);
+
+    bool isNull = false;
+
+    // Count the number of lines
+    for (int i = 0; i < copy.size(); i++) {
+        if (copy[i] == '\n') {
+            lineCount++;
+        } else if (copy[i] == ' ') {
+            wordCount++;
+        } else if (isalnum(copy[i]) && copy[i+1] == '\0') {
+            wordCount++;
+            characterCount++;
+        } else {
+            characterCount++;
+        }
+    }
+    // Count the number of words
+    // Count the number of characters (not including whitespace)
+
+    // -l
+    if (showLines && !showWords && !showCharacters)
+    {
+        
+        output = to_string(lineCount) + '\n';
+    }
+    // -w
+    else if (!showLines && showWords && !showCharacters)
+    {
+        output = to_string(wordCount) + '\n';
+    }
+    // -c
+    else if (!showLines && !showWords && showCharacters)
+    {
+        
+    }
+    // -lw
+    else if (showLines && showWords && !showCharacters)
+    {
+        
+    }
+    // -lc
+    else if (showLines && !showWords && showCharacters)
+    {
+        
+    }
+    // -wc
+    else if (!showLines && showWords && showCharacters)
+    {
+        
+    }
+    // -lwc
+    else if (showLines && showWords && showCharacters)
+    {
+        
+    }
+    // no flags
+    else
+    {
+        output = "     " + to_string(lineCount) + "     " + to_string(wordCount) + "     " + to_string(characterCount) + '\n';
+    }
+
     return output;
 }
 
