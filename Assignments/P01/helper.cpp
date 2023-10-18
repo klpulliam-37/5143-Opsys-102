@@ -8,6 +8,7 @@ using namespace std;
 
 std::vector<std::string> Helper::History;
 bool Helper::HasRedirectO = false;
+bool Helper::IsAppendMode = false;
 string Helper::Outfile = "";
 
 string Helper::GetDir()
@@ -75,6 +76,14 @@ void Helper::SetHasRedirectO(bool _hasRedirectO, string output)
 bool Helper::GetHasRedirectO()
 {
     return HasRedirectO;
+}
+
+void Helper::SetIsAppendMode(bool _IsAppendMode) {
+    IsAppendMode = _IsAppendMode;
+}
+
+bool Helper::GetIsAppendMode() {
+    return IsAppendMode;
 }
 
 string Helper::GetOutfile()

@@ -10,6 +10,7 @@
 #include "cmdtypes.h"
 #include "helper.h"
 #include "requests.h"
+#include "colors.h"
 
 using namespace std;
 
@@ -65,7 +66,7 @@ void Manager::LoadHistory()
     }
     else
     {
-        cout << "LoadHistory: .history could not be loaded" << endl;
+        cout << colors::YELLOW() << "Warning: .history could not be loaded" << colors::RESET() << endl;
     }
 }
 
@@ -80,7 +81,7 @@ void Manager::SaveHistory()
     }
     else
     {
-        cout << "SaveHistory: .history could not be loaded" << endl;
+        cout << colors::YELLOW() << "Warning: .history could not be loaded" << colors::RESET() << endl;
     }
 }
 
@@ -104,6 +105,7 @@ bool Manager::WaitForCommand()
     ExecuteCommands();
     ClearCommands();
     Helper::SetHasRedirectO(false, ""); // Reset redirect
+    Helper::SetIsAppendMode(false);
     return true;
 }
 
@@ -118,17 +120,29 @@ void Manager::ExecuteCommands()
     for (int i = 0; i < Commands.size(); i++)
     {
         input = Commands.at(i)->Execute(input);
-        if (i == Commands.size() - 1) {
+        if (i == Commands.size() - 1 && !Helper::GetHasRedirectO()) {
             cout << input;
         }
     }
 
-    // cout << input;
-
     if (Helper::GetHasRedirectO())
     {
-        ofstream output(Helper::GetOutfile());
-        output << input;
+        ofstream output;
+        if (Helper::GetIsAppendMode()) {
+            output.open(Helper::GetOutfile(), ios::app);
+        } else {
+            output.open(Helper::GetOutfile());    
+        }
+        
+        input = colors::RemoveAnsi(input);
+
+        if (output.is_open()) {
+            output << input;
+        } else {
+            cout << colors::RED() << "Error: " << Helper::GetOutfile() << ": Could not open file" << colors::RESET() << endl;
+        }
+
+        output.close();
     }
 }
 

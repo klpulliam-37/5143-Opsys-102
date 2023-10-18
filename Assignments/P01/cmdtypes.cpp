@@ -36,9 +36,6 @@ string LS::Execute(string input = "")
         }else {
             filename = file.first;
         }
-        if (Helper::GetHasRedirectO() || GetPrints()) {
-            cout << filename << endl;
-        }
         fileNames += filename + '\n';
     }
 
@@ -115,10 +112,7 @@ string PWD::Execute(string input = "")
     Command::Execute(input);
 
     string pwd = cpprequests::GetCWD();
-    if (Helper::GetHasRedirectO() || GetPrints())
-    {
-        cout << pwd << '\n';
-    }
+
     return pwd;
 }
 
@@ -133,20 +127,9 @@ string CD::Execute(string input = "")
     stringstream ss(GetArguments());
     getline(ss, path);
 
-    // Remove whitespace to ensure correct path
-    for (size_t i = 0; i < path.length(); ++i) {
-        if (isspace(path[i])) {
-            path.erase(i, 1);
-            --i;  // Adjust index after erasing
-        }
-    }
+    path = Helper::RemoveWhitespace(path);
 
-    // cout << "Path: '" << path << "'" << endl;
     newpath = cpprequests::ChangeDirectory(path);
-
-    if (Helper::GetHasRedirectO() || GetPrints()) {
-        cout << newpath << endl;
-    }
 
     return newpath;
 }
@@ -194,9 +177,6 @@ string CAT::Execute(string input = "")
                     if (files[i]["file_type"] == "directory") {
                         cout << colors::RED() << "cat: " << fileName << ": Is a directory" << colors::RESET() << endl;
                     }
-                    // else if ((Helper::GetHasRedirectO() || GetPrints())) {
-                    //     cout << files[i]["contents"] + '\n';
-                    // }
                     output += files[i]["contents"];
                 }
             }
@@ -209,13 +189,8 @@ string CAT::Execute(string input = "")
 }
 
 string Head::Execute(string input = "") {
-    string output = "", contents = "";
-    
-    if (input != "") {
-        contents = input;
-    } else {
-        contents = CAT::Execute(input);
-    }
+    string output = "";
+    string contents = CAT::Execute(input);
 
     // cout << "Contents: \n" << contents << endl;
 
@@ -238,25 +213,16 @@ string Head::Execute(string input = "") {
 
     for (int i = 0; i < numLines; i++) {
         getline(contentReader, line);
-        // cout << "Line: " << line << endl;
         output += line + '\n';
     }
-
-    // if (Helper::GetHasRedirectO() || GetPrints()) {
-    //     cout << output;
-    // }
     
     return output;
 }
 
 string Tail::Execute(string input = "") {
-    string output = "", contents = "";
+    string output = "";
     
-    if (input != "") {
-        contents = input;
-    } else {
-        contents = CAT::Execute(input);
-    }
+    string contents = CAT::Execute(input);
 
     // cout << "Contents: \n" << contents << endl;
 
@@ -282,29 +248,19 @@ string Tail::Execute(string input = "") {
         lineList.push_back(line);
     }
 
-    // reverse(lineList.begin(), lineList.end());
-
     for (int i = numLines; i > 0; i--) {
         int index = lineList.size() - i;
         output += lineList[index] + '\n';
     }
-
-    // if (Helper::GetHasRedirectO() || GetPrints()) {
-    //     cout << output;
-    // }
     
     return output;
 }
 
+// Still needs some work, not giving exact values for words and characters.
+// Off by one on both. Extra character and missing words when no spaces.
 string WC::Execute(string input = "") {
-    string output = "", contents = "";
-    
-    if (input != "") {
-        contents = input;
-    } else {
-        contents = CAT::Execute(input);
-    }
-
+    string output = "";
+    string contents = CAT::Execute(input);
     string flags = PrintFlags();
 
     // Check for show all flag
@@ -312,11 +268,11 @@ string WC::Execute(string input = "") {
     {
         showLines = true;
     }
-    else if (flags.find('w') != string::npos)
+    if (flags.find('w') != string::npos)
     {
         showWords = true;
     }
-    else if (flags.find('c') != string::npos)
+    if (flags.find('c') != string::npos)
     {
         showCharacters = true;
     }
@@ -341,8 +297,6 @@ string WC::Execute(string input = "") {
             characterCount++;
         }
     }
-    // Count the number of words
-    // Count the number of characters (not including whitespace)
 
     // -l
     if (showLines && !showWords && !showCharacters)
@@ -358,29 +312,24 @@ string WC::Execute(string input = "") {
     // -c
     else if (!showLines && !showWords && showCharacters)
     {
-        
+        output = to_string(characterCount) + '\n';
     }
     // -lw
     else if (showLines && showWords && !showCharacters)
     {
-        
+        output = "     " + to_string(lineCount) + "     " + to_string(wordCount) + '\n';
     }
     // -lc
     else if (showLines && !showWords && showCharacters)
     {
-        
+        output = "     " + to_string(lineCount) + "     " + to_string(characterCount) + '\n';
     }
     // -wc
     else if (!showLines && showWords && showCharacters)
     {
-        
+        output = "     " + to_string(wordCount) + "     " + to_string(characterCount) + '\n';
     }
-    // -lwc
-    else if (showLines && showWords && showCharacters)
-    {
-        
-    }
-    // no flags
+    // no flags or all flags (-lwc)
     else
     {
         output = "     " + to_string(lineCount) + "     " + to_string(wordCount) + "     " + to_string(characterCount) + '\n';
