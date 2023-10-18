@@ -235,12 +235,30 @@ string RM::Execute(string input = "") {
     fileName = pathParts.back();
     path = Helper::RemoveWhitespace(path);
     fileName = Helper::RemoveWhitespace(fileName);
-    cout << "Entire Path: " << entirePath << endl;
-    cout << "Path: " << path << endl;
-    cout << "File Name: " << fileName << endl;
+    // cout << "Entire Path: " << entirePath << endl;
+    // cout << "Path: " << path << endl;
+    // cout << "File Name: " << fileName << endl;
 
     success = cpprequests::Remove(fileName, path);
     
+    return "";
+}
+
+string Copy::Execute(string input = "")
+{
+    Command::Execute(input);
+
+    string path1 = "", path2 = "";
+    stringstream args(GetArguments());
+
+    getline(args, path1, ' ');
+    getline(args, path2);
+
+    path1 = Helper::RemoveWhitespace(path1);
+    path2 = Helper::RemoveWhitespace(path2);
+
+    string success = cpprequests::Copy(path1, path2);
+
     return "";
 }
 
@@ -475,6 +493,46 @@ string Grep::Execute(string input = "")
     // }
 
     return lines;
+}
+
+string ChMod::Execute(string input = "") {
+    Command::Execute(input);
+
+    string modifier = "", path = "";
+    stringstream args(GetArguments());
+    getline(args, modifier, ' ');
+    getline(args, path);
+
+    modifier = Helper::RemoveWhitespace(modifier);
+    path = Helper::RemoveWhitespace(path);
+
+    int permissions = stoi(modifier);
+
+    string result = cpprequests::ChangeMode(path, permissions);
+
+    return "";
+}
+
+string Sort::Execute(string input = "") {
+    Command::Execute(input);
+
+    string file = "";
+    stringstream args(GetArguments());
+    getline(args, file);
+
+    file = Helper::RemoveWhitespace(file);
+
+    string output = cpprequests::Sort(file);
+
+    return output;
+}
+
+string Who::Execute(string input = "") {
+    Command::Execute(input);
+
+    string user = cpprequests::Who();
+
+    return user + '\n';
 }
 
 string History::Execute(string input = "")

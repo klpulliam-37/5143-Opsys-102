@@ -270,6 +270,20 @@ namespace cpprequests {
         return success;
     }
 
+    std::string Copy(std::string path1, std::string path2) {
+        cpr::Response r = cpr::Post(
+            cpr::Url{url + "/utilities/copy"},
+            header,
+            cpr::Body{"{\r\n    \"copy_path\": \"" + path1 + "\",\r\n    \"destination_directory\": \"" + path2 + "\",\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}"}
+        );
+        
+        const char* text = r.text.c_str();
+
+        std::string success = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "Success");
+
+        return success;
+    }
+
     std::vector<std::map<std::string, std::string>> CAT() {
         cpr::Response r = cpr::Get(
             cpr::Url{url + "/utilities/ls"},
@@ -339,6 +353,60 @@ namespace cpprequests {
         }
     }
 
-    
+    std::string ChangeMode(std::string path, int permissions)
+    {
+        std::string perm_str = std::to_string(permissions);
+        cpr::Response r = cpr::Patch(
+            cpr::Url{url + "/path"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"permissions\": \"" + perm_str + "\",\r\n   \"path\": \"" + path + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl; 
+
+        std::string success = text;
+
+        return success;
+
+
+    }
+
+    std::string Sort(std::string file) {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/utilities/sort"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\",\r\n    \"path\": \"" + file + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        std::string contents = jsonhandler::UnpackArray(jsonhandler::StringToJson(text));
+        // std::cout << "In Sort\n" << contents << std::endl;
+
+        return contents;
+    }
+
+    std::string Who() {
+        cpr::Response r = cpr::Get(
+            cpr::Url{url + "/utilities/whoami"},
+            header,
+            cpr::Body{"{\r\n    \"session_id\": \"" + GetSessionID() + "\"\r\n}"}
+        );
+
+        const char* text = r.text.c_str();
+
+        // std::cout << text << std::endl;
+
+        // std::vector<const char*> keys;
+        // keys.push_back("username");
+
+        std::string user = jsonhandler::ExtractValue(jsonhandler::StringToJson(text), "username");
+        
+        return user;
+    }
 }
 

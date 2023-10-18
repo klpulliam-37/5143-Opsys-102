@@ -59,6 +59,14 @@ public:
     string Execute(string input) override;
 };
 
+class Copy: public Command
+{
+public:
+    Copy(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
 class CAT: public Command
 {
 public:
@@ -100,6 +108,30 @@ class Grep: public Command
 {
 public:
     Grep(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
+class ChMod: public Command
+{
+public:
+    ChMod(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
+class Sort: public Command
+{
+public:
+    Sort(string cmd) : Command(cmd) {};
+
+    string Execute(string input) override;
+};
+
+class Who: public Command
+{
+public:
+    Who(string cmd) : Command(cmd) {};
 
     string Execute(string input) override;
 };
