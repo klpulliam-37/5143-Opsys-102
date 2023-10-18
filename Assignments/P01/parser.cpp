@@ -100,11 +100,11 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new PWD(cmd);
     }
-    // // cp
-    // else if (cmd == "cp")
-    // {
-        
-    // }
+    // cp
+    else if (cmd == "cp")
+    {
+        command = new Copy(cmd);
+    }
     // // mv
     // else if (cmd == "mv")
     // {
@@ -149,14 +149,29 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new WC(cmd);   
     }
+    // chmod
+    else if (cmd == "chmod") {
+        command = new ChMod(cmd);
+    }
+    // sort
+    else if (cmd == "sort") {
+        command = new Sort(cmd);
+    }
+    //who
+    else if (cmd == "who") {
+        command = new Who(cmd);
+    }
+    // history
     else if (cmd == "history")
     {
         command = new History(cmd);
     }
+    // !x
     else if (cmd[0] == '!')
     {
         command = new HistoryIndex(cmd, managerRef);
     }
+    // invalid command
     else
     {
         command = new Error(cmd);

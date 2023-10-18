@@ -13,7 +13,7 @@ private:
 
 public:
     Helper();
-    std::string static GetDir();
+    // std::string static GetDir();
     std::string static FormatDir(std::string path);
     void static UpdateHistory(std::string command);
     std::string static GetHistory();
@@ -27,4 +27,5 @@ public:
     bool static GetIsSpecialPrint();
     std::string static GetOutfile();
     std::string static RemoveWhitespace(std::string _str);
+    std::string static ConvertDateTime(std::string datetime);
 };

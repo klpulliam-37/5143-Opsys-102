@@ -76,9 +76,31 @@ std::string jsonhandler::ExtractValue(Document json, const char* key) {
         return std::to_string(itr->value.GetInt());
     } else if (itr->value.IsNull()) {
         return "";
+    } else if (itr->value.IsArray()) {
+
     }
 
     return itr->value.GetString();
+}
+
+std::string jsonhandler::UnpackArray(Document json) {
+    std::string contents = "";
+    // Check if the document is an array
+    if (json.IsArray()) {
+        // Iterate over the array elements (strings in this case)
+        for (rapidjson::SizeType i = 0; i < json.Size(); i++) {
+            if (json[i].IsString()) {
+                // Access the string value
+                contents += json[i].GetString() + '\n';
+                // std::cout << contents;
+                // std::cout << json[i].GetString() << std::endl;
+            }
+        }
+    }
+
+    // std::cout << "In Unpack\n" << contents << std::endl;
+
+    return contents;
 }
 
 std::vector<std::pair<std::string, std::string>> jsonhandler::ParseList(Document list, const char* key) {

@@ -24,9 +24,11 @@ string LS::Execute(string input = "")
 {
     Command::Execute(input);
 
+    string path = Helper::RemoveWhitespace(GetArguments());
+
     string files = "";
 
-    vector<map<string, string>> filesList = cpprequests::GetLS();
+    vector<map<string, string>> filesList = cpprequests::GetLS(path);
    
     string flags = PrintFlags();
     // cout << "Flags: " << flags << endl;
@@ -34,17 +36,17 @@ string LS::Execute(string input = "")
     // Check for show all flag
     if (flags.find('a') != string::npos)
     {
-        cout << "Show Hidden active\n";
+        // cout << "Show Hidden active\n";
         showHidden = true;
     }
     else if (flags.find('l') != string::npos)
     {
-        cout << "Long Listing active\n";
+        // cout << "Long Listing active\n";
         longListing = true;
     }
     else if (flags.find('h') != string::npos)
     {
-        cout << "Human Readable active\n";
+        // cout << "Human Readable active\n";
         humanReadable = true;
     }
 
@@ -67,11 +69,16 @@ string LS::Execute(string input = "")
             }else {
                 filename = filesList[i]["file_name"];
             }
+            stringstream userinfo(cpprequests::GetUser(filesList[i]["user_id"]));
+            string user = "", group = "";
+            getline(userinfo, user);
+            // getline(userinfo, group);
             // cout << "Before cout\n";
             cout << left << setw(11) << filesList[i]["permissions"] 
-                << setw(filesList[i]["user_id"].length() + 1) << filesList[i]["user_id"]
+                << setw(user.length() + 1) << user
+                << setw(user.length() + 1) << user
                 << right << setw(6) << filesList[i]["file_size"]
-                << setw(27/*13*/) << filesList[i]["modification_time"]
+                << setw(13) << Helper::ConvertDateTime(filesList[i]["modification_time"])
                 << ' ' << filename << endl;
             files += filename + '\n';
         }
@@ -228,12 +235,30 @@ string RM::Execute(string input = "") {
     fileName = pathParts.back();
     path = Helper::RemoveWhitespace(path);
     fileName = Helper::RemoveWhitespace(fileName);
-    cout << "Entire Path: " << entirePath << endl;
-    cout << "Path: " << path << endl;
-    cout << "File Name: " << fileName << endl;
+    // cout << "Entire Path: " << entirePath << endl;
+    // cout << "Path: " << path << endl;
+    // cout << "File Name: " << fileName << endl;
 
     success = cpprequests::Remove(fileName, path);
     
+    return "";
+}
+
+string Copy::Execute(string input = "")
+{
+    Command::Execute(input);
+
+    string path1 = "", path2 = "";
+    stringstream args(GetArguments());
+
+    getline(args, path1, ' ');
+    getline(args, path2);
+
+    path1 = Helper::RemoveWhitespace(path1);
+    path2 = Helper::RemoveWhitespace(path2);
+
+    string success = cpprequests::Copy(path1, path2);
+
     return "";
 }
 
@@ -468,6 +493,46 @@ string Grep::Execute(string input = "")
     // }
 
     return lines;
+}
+
+string ChMod::Execute(string input = "") {
+    Command::Execute(input);
+
+    string modifier = "", path = "";
+    stringstream args(GetArguments());
+    getline(args, modifier, ' ');
+    getline(args, path);
+
+    modifier = Helper::RemoveWhitespace(modifier);
+    path = Helper::RemoveWhitespace(path);
+
+    int permissions = stoi(modifier);
+
+    string result = cpprequests::ChangeMode(path, permissions);
+
+    return "";
+}
+
+string Sort::Execute(string input = "") {
+    Command::Execute(input);
+
+    string file = "";
+    stringstream args(GetArguments());
+    getline(args, file);
+
+    file = Helper::RemoveWhitespace(file);
+
+    string output = cpprequests::Sort(file);
+
+    return output;
+}
+
+string Who::Execute(string input = "") {
+    Command::Execute(input);
+
+    string user = cpprequests::Who();
+
+    return user + '\n';
 }
 
 string History::Execute(string input = "")

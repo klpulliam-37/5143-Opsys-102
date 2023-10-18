@@ -14,6 +14,7 @@ namespace jsonhandler {
     Document StringToJson(const char* jsonStr);
     std::string JsonToString();
     std::string ExtractValue(Document json, const char* key);
+    std::string UnpackArray(Document json);
     std::vector<std::pair<std::string, std::string>> ParseList(Document list, const char* key);
     std::vector<std::map<std::string, std::string>> ParseObjs(Document json, std::vector<const char*> keys);
     void PrintObjs(std::vector<std::map<std::string, std::string>> objs);

@@ -1,8 +1,13 @@
 #pragma once
-#include <filesystem>
+// #include <filesystem>
+#include <iostream>
+#include <iomanip>
 #include <sstream>
+#include <ctime>
+// #include <chrono>
 
 #include "helper.h"
+#include "colors.h"
 
 using namespace std;
 
@@ -12,20 +17,20 @@ bool Helper::IsAppendMode = false;
 bool Helper::IsSpecialPrint = false;
 string Helper::Outfile = "";
 
-string Helper::GetDir()
-{
-    string path = filesystem::current_path();
+// string Helper::GetDir()
+// {
+//     string path = filesystem::current_path();
     
-    for (int i = 0; i < path.size(); i++)
-    {
-        if (path[i] == '"')
-        {
-            path.erase(i,1);
-        }
-    }
+//     for (int i = 0; i < path.size(); i++)
+//     {
+//         if (path[i] == '"')
+//         {
+//             path.erase(i,1);
+//         }
+//     }
 
-    return path;
-}
+//     return path;
+// }
 
 string Helper::FormatDir(string path)
 {
@@ -110,4 +115,23 @@ string Helper::RemoveWhitespace(string _str) {
         }
     }
     return str;
+}
+
+std::string Helper::ConvertDateTime(std::string _datetime) {
+    std::tm datetime = {};
+
+    // Parse the input datetime string
+    std::istringstream ss(_datetime);
+    ss >> std::get_time(&datetime, "%Y-%m-%dT%H:%M:%S");
+
+    if (ss.fail()) {
+        std::cout << colors::RED() << "Failed to parse datetime string." << colors::RESET() << std::endl;
+        return "";
+    }
+
+    // Format the datetime into the desired output format
+    std::ostringstream formattedDatetime;
+    formattedDatetime << std::put_time(&datetime, "%b %d %H:%M");
+
+    return formattedDatetime.str();
 }

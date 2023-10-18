@@ -87,7 +87,7 @@ void Manager::SaveHistory()
 
 bool Manager::WaitForCommand()
 {
-    string path = Helper::GetDir();
+    // string path = Helper::GetDir();
     string shellCWD = cpprequests::GetShellPath();
     string cmds;
 
@@ -97,6 +97,9 @@ bool Manager::WaitForCommand()
     if (cmds == "exit")
     {
         return false;
+    } else if (cmds == "logout") 
+    {
+        UserLogin();
     }
 
     parser->SplitCommand(cmds);
