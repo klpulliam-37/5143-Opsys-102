@@ -67,6 +67,19 @@ public:
     string Execute(string input) override;
 };
 
+class WC: public CAT
+{
+public:
+    WC(string cmd) : CAT(cmd) {};
+
+    string Execute(string input) override;
+
+private:
+    bool showLines = false;
+    bool showWords = false;
+    bool showCharacters = false;
+};
+
 class Grep: public Command
 {
 public:

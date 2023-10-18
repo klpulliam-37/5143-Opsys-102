@@ -42,12 +42,15 @@ void Parser::SplitCommand(string cmds)
     {
         getline(ss, cmdStr, '>');
         getline(ss, output);
-
         output.erase(0, 1);
 
-        // cout << "ParseRedir: " << Helper::GetHasRedirectO() << '\n';
+        if (cmds.find(">>") != string::npos) {
+            Helper::SetIsAppendMode(true);
+        }
+
+        output = Helper::RemoveWhitespace(output);
+
         Helper::SetHasRedirectO(true, output);
-        // cout << "ParseRedir: " << Helper::GetHasRedirectO() << '\n';
 
         stringstream ssr(cmdStr);
         // split on pipes '|'
@@ -141,11 +144,11 @@ void Parser::CreateCommand(string cmdStr)
     {
         command = new Grep(cmd);
     }
-    // // wc
-    // else if (cmd == "wc")
-    // {
-        
-    // }
+    // wc
+    else if (cmd == "wc")
+    {
+        command = new WC(cmd);   
+    }
     else if (cmd == "history")
     {
         command = new History(cmd);

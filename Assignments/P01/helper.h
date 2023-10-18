@@ -7,6 +7,7 @@ class Helper
 private:
     std::vector<std::string> static History;
     static bool HasRedirectO;
+    static bool IsAppendMode;
     static std::string Outfile;
 
 public:
@@ -19,6 +20,8 @@ public:
     int static GetHistorySize();
     void static SetHasRedirectO(bool _hasRedirectO, std::string output);
     bool static GetHasRedirectO();
+    void static SetIsAppendMode(bool _IsAppendMode);
+    bool static GetIsAppendMode();
     std::string static GetOutfile();
     std::string static RemoveWhitespace(std::string _str);
 };
